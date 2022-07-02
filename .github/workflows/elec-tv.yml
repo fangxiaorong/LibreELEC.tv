@@ -1,0 +1,38 @@
+name: Elec-TV
+
+on:
+  push:
+    branches:
+      - master
+
+
+jobs:
+  build_elec:
+    name: Build Elec.tv
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        use: actions/checkout@v2
+        with:
+          ref: master
+
+      - name: Install Dependences
+        run: |
+          sudo -E apt-get update
+          sudo -E apt-get upgrade
+          sudo -E apt-get -y install gcc make git unzip wget xz-utils bc gperf zip unzip makeinfo g++ mkfontscale mkfontdir bdftopcf xsltproc java
+          sudo -E apt-get -y autoremove --purge
+          sudo -E apt-get clean
+
+          df -h
+
+      - name: Download Tools
+        run: |
+          PROJECT=RPi ARCH=arm tools/download-tool
+
+          df -h
+
+      - name: Building
+        run: |
+          PROJECT=RPi ARCH=arm DEVICE=RPi4 make image
