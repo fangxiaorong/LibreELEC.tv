@@ -36,3 +36,8 @@ jobs:
       - name: Building
         run: |
           PROJECT=RPi ARCH=arm DEVICE=RPi4 make image
+
+      - name: Upload
+        uses: actions/upload-artifact@v3
+        with:
+          path: target/
