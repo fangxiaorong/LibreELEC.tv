@@ -3,15 +3,14 @@
 # Copyright (C) 2017-present Team LibreELEC (https://libreelec.tv)
 
 PKG_NAME="samba"
-PKG_VERSION="4.16.2"
-PKG_SHA256="a0b7a06d5b3fd138cc7b494e010ad0b52e3d5fa68493a44619a7f967467f859c"
+PKG_VERSION="4.19.2"
+PKG_SHA256="9e63f0505e1c631f1db0b7a9349a51e925c026ca03af3fd5d812228bb597d393"
 PKG_LICENSE="GPLv3+"
 PKG_SITE="https://www.samba.org"
 PKG_URL="https://download.samba.org/pub/samba/stable/${PKG_NAME}-${PKG_VERSION}.tar.gz"
 PKG_DEPENDS_TARGET="toolchain attr heimdal:host e2fsprogs Python3 libunwind zlib readline popt libaio connman gnutls wsdd2"
 PKG_NEED_UNPACK="$(get_pkg_directory heimdal) $(get_pkg_directory e2fsprogs)"
 PKG_LONGDESC="A free SMB / CIFS fileserver and client."
-PKG_BUILD_FLAGS="-gold"
 
 configure_package() {
   #PKG_WAF_VERBOSE="-v"
@@ -21,12 +20,6 @@ configure_package() {
     SMB_AVAHI="--enable-avahi"
   else
     SMB_AVAHI="--disable-avahi"
-  fi
-
-  if [ "${TARGET_ARCH}" = x86_64 ]; then
-    SMB_AESNI="--accel-aes=intelaesni"
-  else
-    SMB_AESNI="--accel-aes=none"
   fi
 
   PKG_CONFIGURE_OPTS="--prefix=/usr \
@@ -84,7 +77,7 @@ configure_package() {
   PKG_SAMBA_TARGET="smbclient,client/smbclient,smbtree,nmblookup,testparm"
 
   if [ "${SAMBA_SERVER}" = "yes" ]; then
-    PKG_SAMBA_TARGET+=",smbd/smbd,nmbd,smbpasswd"
+    PKG_SAMBA_TARGET+=",nmbd,rpcd_classic,rpcd_epmapper,rpcd_winreg,samba-dcerpcd,smbpasswd,smbd/smbd"
   fi
 }
 
@@ -155,6 +148,12 @@ perform_manual_install() {
     mkdir -p ${INSTALL}/usr/sbin
       cp -L ${PKG_BUILD}/bin/smbd ${INSTALL}/usr/sbin
       cp -L ${PKG_BUILD}/bin/nmbd ${INSTALL}/usr/sbin
+
+    mkdir -p ${INSTALL}/usr/libexec/samba
+      cp -PR bin/default/source3/rpc_server/samba-dcerpcd ${INSTALL}/usr/libexec/samba
+      cp -PR bin/default/source3/rpc_server/rpcd_classic ${INSTALL}/usr/libexec/samba
+      cp -PR bin/default/source3/rpc_server/rpcd_epmapper ${INSTALL}/usr/libexec/samba
+      cp -PR bin/default/source3/rpc_server/rpcd_winreg ${INSTALL}/usr/libexec/samba
   fi
 }
 
@@ -168,7 +167,6 @@ post_makeinstall_target() {
 
   mkdir -p ${INSTALL}/usr/lib/samba
     cp ${PKG_DIR}/scripts/samba-config ${INSTALL}/usr/lib/samba
-    cp ${PKG_DIR}/scripts/smbd-config ${INSTALL}/usr/lib/samba
     cp ${PKG_DIR}/scripts/samba-autoshare ${INSTALL}/usr/lib/samba
 
   if find_file_path config/smb.conf; then

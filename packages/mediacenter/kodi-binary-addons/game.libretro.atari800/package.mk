@@ -2,8 +2,8 @@
 # Copyright (C) 2020-present Team LibreELEC (https://libreelec.tv)
 
 PKG_NAME="game.libretro.atari800"
-PKG_VERSION="3.1.0.18-Leia"
-PKG_SHA256="d716dfbc85e1c4e808fde68f010864ab3120b685fcffa4f752982ed7e95cc1b8"
+PKG_VERSION="3.1.0.28-Nexus"
+PKG_SHA256="c13aad1c5ecead95bc8f684f4fb427b1a68176b7eeaef456c4b74c6f374a99ae"
 PKG_REV="1"
 PKG_ARCH="any"
 PKG_LICENSE="GPL"

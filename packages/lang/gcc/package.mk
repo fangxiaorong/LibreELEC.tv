@@ -3,16 +3,20 @@
 # Copyright (C) 2018-present Team LibreELEC (https://libreelec.tv)
 
 PKG_NAME="gcc"
-PKG_VERSION="11.3.0"
-PKG_SHA256="b47cf2818691f5b1e21df2bb38c795fac2cfbd640ede2d0a5e1c89e338a3ac39"
+PKG_VERSION="13.2.0"
+PKG_SHA256="e275e76442a6067341a27f04c5c6b83d8613144004c0413528863dc6b5c743da"
 PKG_LICENSE="GPL-2.0-or-later"
-PKG_SITE="http://gcc.gnu.org/"
-PKG_URL="http://ftpmirror.gnu.org/gcc/${PKG_NAME}-${PKG_VERSION}/${PKG_NAME}-${PKG_VERSION}.tar.xz"
+PKG_SITE="https://gcc.gnu.org/"
+PKG_URL="https://ftpmirror.gnu.org/gcc/${PKG_NAME}-${PKG_VERSION}/${PKG_NAME}-${PKG_VERSION}.tar.xz"
 PKG_DEPENDS_BOOTSTRAP="ccache:host autoconf:host binutils:host gmp:host mpfr:host mpc:host zstd:host"
 PKG_DEPENDS_TARGET="toolchain"
-PKG_DEPENDS_HOST="ccache:host autoconf:host binutils:host gmp:host mpfr:host mpc:host zstd:host glibc"
+PKG_DEPENDS_HOST="ccache:host autoconf:host binutils:host gmp:host mpfr:host mpc:host zstd:host glibc libxcrypt"
 PKG_DEPENDS_INIT="toolchain"
 PKG_LONGDESC="This package contains the GNU Compiler Collection."
+
+if [ "${MOLD_SUPPORT}" = "yes" ]; then
+  PKG_DEPENDS_HOST+=" mold:host"
+fi
 
 case ${TARGET_ARCH} in
   arm|riscv64)
@@ -77,6 +81,28 @@ PKG_CONFIGURE_OPTS_HOST="${GCC_COMMON_CONFIGURE_OPTS} \
                          --enable-libstdcxx-time \
                          --enable-clocale=gnu \
                          ${TARGET_ARCH_GCC_OPTS}"
+
+post_makeinstall_bootstrap() {
+  GCC_VERSION=$(${TOOLCHAIN}/bin/${TARGET_NAME}-gcc -dumpversion)
+  DATE="0401$(echo ${GCC_VERSION} | sed 's/\./0/g')"
+  CROSS_CC=${TARGET_PREFIX}gcc-${GCC_VERSION}
+
+  rm -f ${TARGET_PREFIX}gcc
+
+cat > ${TARGET_PREFIX}gcc <<EOF
+#!/bin/sh
+${TOOLCHAIN}/bin/ccache ${CROSS_CC} "\$@"
+EOF
+
+  chmod +x ${TARGET_PREFIX}gcc
+
+  # To avoid cache trashing
+  touch -c -t ${DATE} ${CROSS_CC}
+
+  # install lto plugin for binutils
+  mkdir -p ${TOOLCHAIN}/lib/bfd-plugins
+    ln -sf ../gcc/${TARGET_NAME}/${GCC_VERSION}/liblto_plugin.so ${TOOLCHAIN}/lib/bfd-plugins
+}
 
 pre_configure_host() {
   unset CPP

@@ -2,8 +2,8 @@
 # Copyright (C) 2021-present Team LibreELEC (https://libreelec.tv)
 
 PKG_NAME="nvidia"
-PKG_VERSION="515.48.07"
-PKG_SHA256="9ec1515cb214261ae4081a6fc9489800b5fef41c6a8d669e84e4ab1de7f3dc14"
+PKG_VERSION="525.116.03"
+PKG_SHA256="47d32cabbc01af0f4d64e9cb45e9a451f3401b475ea155dfb7f840cba97b99e8"
 PKG_ARCH="x86_64"
 PKG_LICENSE="nonfree"
 PKG_SITE="https://www.nvidia.com/en-us/drivers/unix/"
@@ -59,8 +59,8 @@ makeinstall_target() {
 
   # Wayland
   mkdir -p ${INSTALL}/usr/lib
-    cp -p libnvidia-egl-wayland.so.1.1.9  ${INSTALL}/usr/lib/
-    ln -sf libnvidia-egl-wayland.so.1.1.9 ${INSTALL}/usr/lib/libnvidia-egl-wayland.so.1
+    cp -p libnvidia-egl-wayland.so.1.1.10  ${INSTALL}/usr/lib/
+    ln -sf libnvidia-egl-wayland.so.1.1.10 ${INSTALL}/usr/lib/libnvidia-egl-wayland.so.1
     ln -sf libnvidia-egl-wayland.so.1     ${INSTALL}/usr/lib/libnvidia-egl-wayland.so
 
   mkdir -p ${INSTALL}/usr/share/egl/egl_external_platform.d

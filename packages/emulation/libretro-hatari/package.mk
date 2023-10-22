@@ -2,22 +2,25 @@
 # Copyright (C) 2016-present Team LibreELEC (https://libreelec.tv)
 
 PKG_NAME="libretro-hatari"
-PKG_VERSION="79d128888ca3efdd27d639a35edf72a9bc81a798"
-PKG_SHA256="bf1324726160c0d05274a920e74b08d2e4e266b2c52f3cd9c67d944f11aea02e"
-PKG_LICENSE="GPLv3"
+PKG_VERSION="00a46e1ed216e3b51b1cd829e04a36caf30a0338"
+PKG_SHA256="06a745a1094c46320a1980d5c0f69bf04481e169b56179021bf59f549252f2a8"
+PKG_LICENSE="GPLv2"
 PKG_SITE="https://github.com/libretro/hatari"
 PKG_URL="https://github.com/libretro/hatari/archive/${PKG_VERSION}.tar.gz"
-PKG_DEPENDS_TARGET="toolchain kodi-platform"
-PKG_LONGDESC="game.libretro.hatari: hatari for Kodi"
-PKG_TOOLCHAIN="manual"
+PKG_DEPENDS_TARGET="toolchain"
+PKG_LONGDESC="New rebasing of Hatari based on Mercurial upstream. Tries to be a shallow fork for easy upstreaming later on."
+PKG_TOOLCHAIN="make"
 
 PKG_LIBNAME="hatari_libretro.so"
-PKG_LIBPATH="${PKG_LIBNAME}"
+PKG_LIBPATH="../${PKG_LIBNAME}"
 PKG_LIBVAR="HATARI_LIB"
 
-make_target() {
-  cd ${PKG_BUILD}
-  make -f Makefile.libretro
+PKG_MAKE_OPTS_TARGET="-C ../ -f Makefile.libretro"
+
+pre_make_target() {
+  if [ "${ARCH}" = "arm" ]; then
+    CFLAGS+=" -DNO_ASM -DARM -D__arm__ -DARM_ASM -DNOSSE -DARM_HARDFP"
+  fi
 }
 
 makeinstall_target() {

@@ -3,12 +3,12 @@
 # Copyright (C) 2019-present Team LibreELEC (https://libreelec.tv)
 
 PKG_NAME="connman"
-PKG_VERSION="1e1d2af009efc8a8b65eccc06188bd6b28271af7" # 1.41+ / 2022-05-25
-PKG_SHA256="bfdc7a8261c476c003df59a2952090dacf67c78b97027f06db3280edce0d4ee5"
+PKG_VERSION="ff1017600943a9c0da82a82d4e26202f1f068f8f"
+PKG_SHA256="b04a206c26278713367d164fe089a7f9aecac9a392e1e5fd2890114ee9e973d4"
 PKG_LICENSE="GPL"
 PKG_SITE="http://www.connman.net"
 PKG_URL="https://git.kernel.org/pub/scm/network/connman/connman.git/snapshot/connman-${PKG_VERSION}.tar.gz"
-PKG_DEPENDS_TARGET="toolchain glib readline dbus iptables"
+PKG_DEPENDS_TARGET="toolchain dbus glib iptables iwd readline"
 PKG_LONGDESC="A modular network connection manager."
 PKG_TOOLCHAIN="autotools"
 
@@ -42,27 +42,15 @@ PKG_CONFIGURE_OPTS_TARGET="--srcdir=.. \
                            --enable-datafiles \
                            --with-dbusconfdir=/etc \
                            --with-systemdunitdir=/usr/lib/systemd/system \
-                           --disable-silent-rules"
+                           --disable-silent-rules \
+                           --disable-wifi \
+                           --enable-iwd"
 
 if [ "${WIREGUARD_SUPPORT}" = "yes" ]; then
   PKG_CONFIGURE_OPTS_TARGET+=" --enable-wireguard=builtin"
 else
   PKG_CONFIGURE_OPTS_TARGET+=" --disable-wireguard"
 fi
-
-case "${WIRELESS_DAEMON}" in
-  wpa_supplicant)
-    PKG_DEPENDS_TARGET+=" wpa_supplicant"
-    PKG_CONFIGURE_OPTS_TARGET+=" WPASUPPLICANT=/usr/bin/wpa_supplicant \
-                                 --enable-wifi \
-                                 --disable-iwd"
-    ;;
-  iwd)
-    PKG_DEPENDS_TARGET+=" iwd"
-    PKG_CONFIGURE_OPTS_TARGET+=" --disable-wifi \
-                                 --enable-iwd"
-    ;;
-esac
 
 PKG_MAKE_OPTS_TARGET="storagedir=/storage/.cache/connman \
                       vpn_storagedir=/storage/.config/wireguard \
@@ -90,7 +78,7 @@ post_makeinstall_target() {
         -e "s|^# FallbackNameservers.*|FallbackNameservers = 8.8.8.8,8.8.4.4|g" \
         -e "s|^# FallbackTimeservers.*|FallbackTimeservers = 0.pool.ntp.org,1.pool.ntp.org,2.pool.ntp.org,3.pool.ntp.org|g" \
         -e "s|^# PreferredTechnologies.*|PreferredTechnologies = ethernet,wifi,cellular|g" \
-        -e "s|^# TetheringTechnologies.*|TetheringTechnologies = wifi|g" \
+        -e "s|^# TetheringTechnologies.*|TetheringTechnologies = ethernet,wifi|g" \
         -e "s|^# AllowHostnameUpdates.*|AllowHostnameUpdates = false|g" \
         -e "s|^# PersistentTetheringMode.*|PersistentTetheringMode = true|g" \
         -e "s|^# NetworkInterfaceBlacklist = vmnet,vboxnet,virbr,ifb|NetworkInterfaceBlacklist = vmnet,vboxnet,virbr,ifb,docker,veth,zt|g"

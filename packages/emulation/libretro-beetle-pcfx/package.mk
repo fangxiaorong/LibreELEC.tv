@@ -2,38 +2,28 @@
 # Copyright (C) 2016-present Team LibreELEC (https://libreelec.tv)
 
 PKG_NAME="libretro-beetle-pcfx"
-PKG_VERSION="6d2b11e17ad5a95907c983e7c8a70e75508c2d41"
-PKG_SHA256="b5a0d170aa1944aa47726e42c230550294d44ecd5565d460bc943a68dc781b5a"
+PKG_VERSION="47c355b6a515aef6dc57f57df1535570108a0e21"
+PKG_SHA256="15f5395778c9ce03e99c3a7cf0e0303dd58e5eba93f2b95c8ee6366fd8c25cba"
 PKG_LICENSE="GPLv2"
 PKG_SITE="https://github.com/libretro/beetle-pcfx-libretro"
 PKG_URL="https://github.com/libretro/beetle-pcfx-libretro/archive/${PKG_VERSION}.tar.gz"
-PKG_DEPENDS_TARGET="toolchain kodi-platform"
-PKG_LONGDESC="Standalone port of Mednafen PCFX to libretro"
+PKG_DEPENDS_TARGET="toolchain"
+PKG_LONGDESC="libretro implementation of Mednafen PC-FX."
+PKG_TOOLCHAIN="make"
+
+if [ "${ARCH}" = "x86_64" ]; then
+  PKG_MAKE_OPTS_TARGET="platform=unix"
+else
+  PKG_MAKE_OPTS_TARGET="platform=armv"
+fi
+
+pre_make_target() {
+  PKG_MAKE_OPTS_TARGET+=" CC=${CC} CXX=${CXX} AR=${AR}"
+}
 
 PKG_LIBNAME="mednafen_pcfx_libretro.so"
 PKG_LIBPATH="${PKG_LIBNAME}"
 PKG_LIBVAR="BEETLE-PCFX_LIB"
-
-make_target() {
-  case ${TARGET_CPU} in
-    arm1176jzf-s)
-      make platform=armv6-hardfloat
-      ;;
-    cortex-a7|cortex-a8)
-      make platform=armv7-neon-hardfloat
-      ;;
-    cortex-a9|*cortex-a53|cortex-a17)
-      if [ "${TARGET_ARCH}" = "aarch64" ]; then
-        make platform=aarch64
-      else
-        make platform=armv7-cortexa9-neon-hardfloat
-      fi
-      ;;
-    x86-64)
-      make
-      ;;
-  esac
-}
 
 makeinstall_target() {
   mkdir -p ${SYSROOT_PREFIX}/usr/lib/cmake/${PKG_NAME}

@@ -3,8 +3,8 @@
 # Copyright (C) 2020-present Team LibreELEC (https://libreelec.tv)
 
 PKG_NAME="autoconf-archive"
-PKG_VERSION="2022.02.11"
-PKG_SHA256="78a61b611e2eeb55a89e0398e0ce387bcaf57fe2dd53c6fe427130f777ad1e8c"
+PKG_VERSION="2023.02.20"
+PKG_SHA256="71d4048479ae28f1f5794619c3d72df9c01df49b1c628ef85fde37596dc31a33"
 PKG_LICENSE="GPL"
 PKG_SITE="https://www.gnu.org/software/autoconf-archive/"
 PKG_URL="http://ftpmirror.gnu.org/autoconf-archive/${PKG_NAME}-${PKG_VERSION}.tar.xz"

@@ -3,8 +3,8 @@
 # Copyright (C) 2019-present Team LibreELEC (https://libreelec.tv)
 
 PKG_NAME="libxkbcommon"
-PKG_VERSION="1.4.1"
-PKG_SHA256="943c07a1e2198026d8102b17270a1f406e4d3d6bbc4ae105b9e1b82d7d136b39"
+PKG_VERSION="1.6.0"
+PKG_SHA256="0edc14eccdd391514458bc5f5a4b99863ed2d651e4dd761a90abf4f46ef99c2b"
 PKG_LICENSE="MIT"
 PKG_SITE="https://xkbcommon.org"
 PKG_URL="https://xkbcommon.org/download/${PKG_NAME}-${PKG_VERSION}.tar.xz"
@@ -17,6 +17,7 @@ if [ "${DISPLAYSERVER}" = "x11" ]; then
   PKG_MESON_OPTS_TARGET+=" -Denable-x11=true \
                            -Denable-wayland=false"
 elif [ "${DISPLAYSERVER}" = "wl" ]; then
+  PKG_DEPENDS_TARGET+=" wayland wayland-protocols"
   PKG_MESON_OPTS_TARGET+=" -Denable-x11=false \
                            -Denable-wayland=true"
 else

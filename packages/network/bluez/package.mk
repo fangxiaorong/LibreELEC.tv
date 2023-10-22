@@ -3,8 +3,8 @@
 # Copyright (C) 2019-present Team LibreELEC (https://libreelec.tv)
 
 PKG_NAME="bluez"
-PKG_VERSION="5.64"
-PKG_SHA256="ae437e65b6b3070c198bc5b0109fe9cdeb9eaa387380e2072f9de65fe8a1de34"
+PKG_VERSION="5.70"
+PKG_SHA256="37e372e916955e144cb882f888e4be40898f10ae3b7c213ddcdd55ee9c009278"
 PKG_LICENSE="GPL"
 PKG_SITE="http://www.bluez.org/"
 PKG_URL="https://www.kernel.org/pub/linux/bluetooth/${PKG_NAME}-${PKG_VERSION}.tar.xz"
@@ -55,7 +55,6 @@ post_makeinstall_target() {
   safe_remove ${INSTALL}/usr/lib/systemd
   safe_remove ${INSTALL}/usr/bin/bluemoon
   safe_remove ${INSTALL}/usr/bin/ciptool
-  safe_remove ${INSTALL}/usr/share/dbus-1
 
   mkdir -p ${INSTALL}/etc/bluetooth
     cp src/main.conf ${INSTALL}/etc/bluetooth

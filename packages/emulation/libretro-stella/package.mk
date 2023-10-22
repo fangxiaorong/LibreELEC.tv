@@ -2,21 +2,20 @@
 # Copyright (C) 2016-present Team LibreELEC (https://libreelec.tv)
 
 PKG_NAME="libretro-stella"
-PKG_VERSION="1a2e96bc6ccf91de6fb4322048da05f67a9d21d4"
-PKG_SHA256="f4037d008685b4ee7a6f18a39f9b69c3e9e58be15b4b947a8e165516623e1a6d"
+PKG_VERSION="d47cdb3d3ea4485207d2842c26ec126646bd25f4"
+PKG_SHA256="aa4100027248003a88f4b83c3b571c0e42d8cc078552a0f4b3e8e95f4191fcc8"
 PKG_LICENSE="GPLv2"
-PKG_SITE="https://github.com/libretro/stella-libretro"
-PKG_URL="https://github.com/libretro/stella-libretro/archive/${PKG_VERSION}.tar.gz"
-PKG_DEPENDS_TARGET="toolchain kodi-platform"
-PKG_LONGDESC="game.libretro.stella: Stella for Kodi"
+PKG_SITE="https://github.com/stella-emu/stella"
+PKG_URL="https://github.com/stella-emu/stella/archive/${PKG_VERSION}.tar.gz"
+PKG_DEPENDS_TARGET="toolchain"
+PKG_LONGDESC="Stella is a multi-platform Atari 2600 VCS emulator released under the GNU General Public License (GPL)."
+PKG_TOOLCHAIN="make"
 
-PKG_LIBNAME="stella2014_libretro.so"
-PKG_LIBPATH="${PKG_LIBNAME}"
+PKG_LIBNAME="stella_libretro.so"
+PKG_LIBPATH="../src/os/libretro/${PKG_LIBNAME}"
 PKG_LIBVAR="STELLA_LIB"
 
-make_target() {
-  make
-}
+PKG_MAKE_OPTS_TARGET="-C ../src/os/libretro -f Makefile"
 
 makeinstall_target() {
   mkdir -p ${SYSROOT_PREFIX}/usr/lib/cmake/${PKG_NAME}

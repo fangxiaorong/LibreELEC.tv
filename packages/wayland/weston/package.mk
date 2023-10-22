@@ -2,25 +2,25 @@
 # Copyright (C) 2016-present Team LibreELEC (https://libreelec.tv)
 
 PKG_NAME="weston"
-PKG_VERSION="10.0.0"
-PKG_SHA256="5c23964112b90238bed39e5dd1e41cd71a79398813cdc3bbb15a9fdc94e547ae"
+PKG_VERSION="12.0.2"
+PKG_SHA256="eb686a7cf00992a23b17f192fca9a887313e92c346ee35d8575196983d656b4a"
 PKG_LICENSE="MIT"
 PKG_SITE="https://wayland.freedesktop.org/"
-PKG_URL="https://wayland.freedesktop.org/releases/${PKG_NAME}-${PKG_VERSION}.tar.xz"
+PKG_URL="https://gitlab.freedesktop.org/wayland/weston/-/releases/${PKG_VERSION}/downloads/${PKG_NAME}-${PKG_VERSION}.tar.xz"
 PKG_DEPENDS_TARGET="toolchain wayland wayland-protocols libdrm libxkbcommon libinput cairo pango libjpeg-turbo dbus seatd"
 PKG_LONGDESC="Reference implementation of a Wayland compositor"
 
 PKG_MESON_OPTS_TARGET="-Dbackend-drm=true \
                        -Dbackend-drm-screencast-vaapi=false \
                        -Dbackend-headless=false \
+                       -Dbackend-pipewire=false \
                        -Dbackend-rdp=false \
                        -Dscreenshare=false \
+                       -Dbackend-vnc=false \
                        -Dbackend-wayland=false \
                        -Dbackend-x11=false \
-                       -Ddeprecated-backend-fbdev=false \
                        -Dbackend-default=drm \
                        -Drenderer-gl=true \
-                       -Ddeprecated-weston-launch=false \
                        -Dxwayland=false \
                        -Dsystemd=true \
                        -Dremoting=false \
@@ -30,10 +30,7 @@ PKG_MESON_OPTS_TARGET="-Dbackend-drm=true \
                        -Dshell-ivi=false \
                        -Dshell-kiosk=false \
                        -Ddesktop-shell-client-default="weston-desktop-shell" \
-                       -Ddeprecated-wl-shell=false \
                        -Dcolor-management-lcms=false \
-                       -Dcolor-management-colord=false \
-                       -Dlauncher-logind=false \
                        -Dlauncher-libseat=true \
                        -Dimage-jpeg=true \
                        -Dimage-webp=false \
@@ -44,7 +41,6 @@ PKG_MESON_OPTS_TARGET="-Dbackend-drm=true \
                        -Dwcap-decode=false \
                        -Dtest-junit-xml=false \
                        -Dtest-skip-is-failure=false \
-                       -Dtest-gl-renderer=false \
                        -Ddoc=false"
 
 pre_configure_target() {

@@ -3,8 +3,8 @@
 # Copyright (C) 2018-present Team LibreELEC (https://libreelec.tv)
 
 PKG_NAME="systemd"
-PKG_VERSION="251.2"
-PKG_SHA256="5b371e824fe3e3128f2338b8db8cd37171f8e249eea88077eea468f73d833545"
+PKG_VERSION="254.5"
+PKG_SHA256="41873783aa1c680e10d2f2626797a1c2fef8018d69b68c8c77639e140ee7846d"
 PKG_LICENSE="LGPL2.1+"
 PKG_SITE="http://www.freedesktop.org/wiki/Software/systemd"
 PKG_URL="https://github.com/systemd/systemd-stable/archive/v${PKG_VERSION}.tar.gz"
@@ -45,6 +45,7 @@ PKG_MESON_OPTS_TARGET="--libdir=/usr/lib \
                        -Dbzip2=false \
                        -Dxz=false \
                        -Dlz4=false \
+                       -Dzstd=false \
                        -Dxkbcommon=false \
                        -Dpcre2=false \
                        -Dglib=false \
@@ -79,7 +80,6 @@ PKG_MESON_OPTS_TARGET="--libdir=/usr/lib \
                        -Dhwdb=true \
                        -Drfkill=false \
                        -Dldconfig=false \
-                       -Defi=false \
                        -Dtpm=false \
                        -Dima=false \
                        -Dsmack=false \
@@ -100,8 +100,13 @@ PKG_MESON_OPTS_TARGET="--libdir=/usr/lib \
                        -Dmount-path=/usr/bin/mount \
                        -Dumount-path=/usr/bin/umount \
                        -Ddebug-tty=${DEBUG_TTY} \
-                       -Dpkgconfigdatadir=/usr/lib/pkgconfig \
                        -Dversion-tag=${PKG_VERSION}"
+
+if [ "${PROJECT}" = "Generic" ]; then
+  PKG_MESON_OPTS_TARGET+=" -Defi=true"
+else
+  PKG_MESON_OPTS_TARGET+=" -Defi=false"
+fi
 
 pre_configure_target() {
   export TARGET_CFLAGS="${TARGET_CFLAGS} -fno-schedule-insns -fno-schedule-insns2 -Wno-format-truncation"
@@ -141,6 +146,11 @@ post_makeinstall_target() {
   safe_remove ${INSTALL}/usr/lib/systemd/systemd-update-done
   safe_remove ${INSTALL}/usr/lib/systemd/system/systemd-update-done.service
   safe_remove ${INSTALL}/usr/lib/systemd/system/*.target.wants/systemd-update-done.service
+  #
+  safe_remove ${INSTALL}/usr/lib/systemd/system/dev-hugepages.mount
+  safe_remove ${INSTALL}/usr/lib/systemd/system/*.target.wants/dev-hugepages.mount
+  #
+  safe_remove ${INSTALL}/usr/lib/systemd/system/systemd-journald-audit.socket
 
   # adjust systemd-hwdb-update (we have read-only /etc).
   sed '/^ConditionNeedsUpdate=.*$/d' -i ${INSTALL}/usr/lib/systemd/system/systemd-hwdb-update.service
@@ -193,7 +203,11 @@ post_makeinstall_target() {
 
   # tune logind.conf
   sed -e "s,^.*HandleLidSwitch=.*$,HandleLidSwitch=ignore,g" -i ${INSTALL}/etc/systemd/logind.conf
-  sed -e "s,^.*HandlePowerKey=.*$,HandlePowerKey=ignore,g" -i ${INSTALL}/etc/systemd/logind.conf
+  if [ "${DISPLAYSERVER}" = "no" ]; then
+    sed -e "s,^.*HandlePowerKey=.*$,HandlePowerKey=poweroff,g" -i ${INSTALL}/etc/systemd/logind.conf
+  else
+    sed -e "s,^.*HandlePowerKey=.*$,HandlePowerKey=ignore,g" -i ${INSTALL}/etc/systemd/logind.conf
+  fi
 
   # replace systemd-machine-id-setup with ours
   safe_remove ${INSTALL}/usr/lib/systemd/system/systemd-machine-id-commit.service

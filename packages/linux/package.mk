@@ -16,21 +16,22 @@ PKG_PATCH_DIRS="${LINUX}"
 
 case "${LINUX}" in
   amlogic)
-    PKG_VERSION="3a82f34133ab678e4e13ce36939b9042773cf33c" # 5.18.3
-    PKG_SHA256="c014455c900be4d4a64ac25f1924ec91a1323cd80dcad84d2838a9a8d67c8f3b"
+    PKG_VERSION="8bbe7c640d76724e9cfd8aa130b8d36ad6db77a9" # 6.5.8
+    PKG_SHA256="9d6f2b0bfd3571b7fe2cebe2537ea9cc627293e1c4c9c0b3e7cd0b15629e5f87"
     PKG_URL="https://github.com/torvalds/linux/archive/${PKG_VERSION}.tar.gz"
     PKG_SOURCE_NAME="linux-${LINUX}-${PKG_VERSION}.tar.gz"
+    PKG_PATCH_DIRS="default"
     ;;
   raspberrypi)
-    PKG_VERSION="4ee9d0f86680c63bb99da598d8d7f4e62b004e96" # 5.15.50
-    PKG_SHA256="41dfe0bfb59f1fbb4cb174569ce2eecdd0b91f0b7c662f70a03b2e13746d46e6"
+    PKG_VERSION="5a52cae54a05499a8487f392cf5dfc3d8a837e6f" # 6.1.58
+    PKG_SHA256="2a59fa0d11a2892f25c89c774bede0640703fac7ea5dc51e2386b160c323817c"
     PKG_URL="https://github.com/raspberrypi/linux/archive/${PKG_VERSION}.tar.gz"
     PKG_SOURCE_NAME="linux-${LINUX}-${PKG_VERSION}.tar.gz"
     ;;
   *)
-    PKG_VERSION="5.18.5"
-    PKG_SHA256="9c3731d405994f9cd3a1bb72e83140735831b19c7cec18e0d7a8f3046fa034e7"
-    PKG_URL="https://www.kernel.org/pub/linux/kernel/v5.x/${PKG_NAME}-${PKG_VERSION}.tar.xz"
+    PKG_VERSION="6.5.8"
+    PKG_SHA256="299cca897d90deaa176eebec42f0a80eeb7516afed330a45c14da9de086cf717"
+    PKG_URL="https://www.kernel.org/pub/linux/kernel/v${PKG_VERSION/.*/}.x/${PKG_NAME}-${PKG_VERSION}.tar.xz"
     PKG_PATCH_DIRS="default"
     ;;
 esac
@@ -170,7 +171,14 @@ pre_make_target() {
     ${PKG_BUILD}/scripts/config --set-str CONFIG_EXTRA_FIRMWARE_DIR "external-firmware"
   fi
 
-  kernel_make oldconfig
+  kernel_make listnewconfig
+  if [ "${INTERACTIVE_CONFIG}" = "yes" ]; then
+    # manually answer .config changes
+    kernel_make oldconfig
+  else
+    # accept default answers for .config changes
+    yes "" | kernel_make oldconfig > /dev/null
+  fi
 
   if [ -f "${DISTRO_DIR}/${DISTRO}/kernel_options" ]; then
     while read OPTION; do
@@ -227,6 +235,7 @@ make_target() {
       NO_GTK2=1 \
       NO_LIBNUMA=1 \
       NO_LIBAUDIT=1 \
+      NO_LIBTRACEEVENT=1 \
       NO_LZMA=1 \
       NO_SDT=1 \
       CROSS_COMPILE="${TARGET_PREFIX}" \
@@ -277,7 +286,9 @@ makeinstall_target() {
 
   if [ "${BOOTLOADER}" = "u-boot" ]; then
     mkdir -p ${INSTALL}/usr/share/bootloader
-    for dtb in arch/${TARGET_KERNEL_ARCH}/boot/dts/*.dtb arch/${TARGET_KERNEL_ARCH}/boot/dts/*/*.dtb; do
+    for dtb in arch/${TARGET_KERNEL_ARCH}/boot/dts/*.dtb \
+               arch/${TARGET_KERNEL_ARCH}/boot/dts/*/*.dtb \
+               arch/${TARGET_KERNEL_ARCH}/boot/dts/*/*/*.dtb; do
       if [ -f ${dtb} ]; then
         cp -v ${dtb} ${INSTALL}/usr/share/bootloader
       fi
@@ -293,7 +304,9 @@ makeinstall_target() {
 
     # install platform dtbs, but remove upstream kernel dtbs (i.e. without downstream
     # drivers and decent USB support) as these are not required by LibreELEC
-    for dtb in arch/${TARGET_KERNEL_ARCH}/boot/dts/*.dtb arch/${TARGET_KERNEL_ARCH}/boot/dts/*/*.dtb; do
+    for dtb in arch/${TARGET_KERNEL_ARCH}/boot/dts/*.dtb \
+               arch/${TARGET_KERNEL_ARCH}/boot/dts/*/*.dtb \
+               arch/${TARGET_KERNEL_ARCH}/boot/dts/*/*/*.dtb; do
       if [ -f ${dtb} ]; then
         cp -v ${dtb} ${INSTALL}/usr/share/bootloader
       fi

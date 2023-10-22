@@ -2,8 +2,8 @@
 # Copyright (C) 2016-present Team LibreELEC (https://libreelec.tv)
 
 PKG_NAME="qemu"
-PKG_VERSION="7.0.0"
-PKG_SHA256="f6b375c7951f728402798b0baabb2d86478ca53d44cedbefabbe1c46bf46f839"
+PKG_VERSION="8.0.3"
+PKG_SHA256="ecf4d32cbef9d397bfc8cc50e4d1e92a1b30253bf32e8ee73c7a8dcf9a232b09"
 PKG_LICENSE="GPL"
 PKG_SITE="https://www.qemu.org"
 PKG_URL="https://download.qemu.org/qemu-${PKG_VERSION}.tar.xz"
@@ -25,7 +25,7 @@ pre_configure_host() {
     --enable-malloc=system \
     --disable-attr \
     --disable-auth-pam \
-    --disable-blobs \
+    --disable-install-blobs \
     --disable-capstone \
     --disable-curl \
     --disable-debug-info \

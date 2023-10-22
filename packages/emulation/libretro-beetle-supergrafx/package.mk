@@ -2,21 +2,18 @@
 # Copyright (C) 2016-present Team LibreELEC (https://libreelec.tv)
 
 PKG_NAME="libretro-beetle-supergrafx"
-PKG_VERSION="59991a98c232b1a8350a9d67ac554c5b22771d3c"
-PKG_SHA256="5ab78bc66ab428154b1403895173d43793574794ed1b763c63e45761f31662c7"
+PKG_VERSION="e33d73cc6f3e0721e10e3bd7a3031213c8b03977"
+PKG_SHA256="ae1c94edfe6f823b636b40cbc4a9a53bfbf2931fe119f6eba292835136c4ed23"
 PKG_LICENSE="GPLv2"
 PKG_SITE="https://github.com/libretro/beetle-supergrafx-libretro"
 PKG_URL="https://github.com/libretro/beetle-supergrafx-libretro/archive/${PKG_VERSION}.tar.gz"
-PKG_DEPENDS_TARGET="toolchain kodi-platform"
-PKG_LONGDESC="Standalone port of Mednafen PCE Fast to libretro. This one only emulates a SuperGrafx TG-16"
+PKG_DEPENDS_TARGET="toolchain"
+PKG_LONGDESC="Standalone port of Mednafen PCE Fast to libretro."
+PKG_TOOLCHAIN="make"
 
 PKG_LIBNAME="mednafen_supergrafx_libretro.so"
 PKG_LIBPATH="${PKG_LIBNAME}"
 PKG_LIBVAR="BEETLE-SUPERGRAFX_LIB"
-
-make_target() {
-  make
-}
 
 makeinstall_target() {
   mkdir -p ${SYSROOT_PREFIX}/usr/lib/cmake/${PKG_NAME}

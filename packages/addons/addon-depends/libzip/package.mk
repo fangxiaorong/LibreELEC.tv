@@ -3,8 +3,8 @@
 # Copyright (C) 2019-present Team LibreELEC (https://libreelec.tv)
 
 PKG_NAME="libzip"
-PKG_VERSION="1.8.0"
-PKG_SHA256="f0763bda24ba947e80430be787c4b068d8b6aa6027a26a19923f0acfa3dac97e"
+PKG_VERSION="1.10.1"
+PKG_SHA256="dc3c8d5b4c8bbd09626864f6bcf93de701540f761d76b85d7c7d710f4bd90318"
 PKG_LICENSE="GPL"
 PKG_SITE="https://libzip.org/"
 PKG_URL="https://libzip.org/download/${PKG_NAME}-${PKG_VERSION}.tar.xz"
@@ -16,6 +16,7 @@ PKG_CMAKE_OPTS_TARGET="-DENABLE_COMMONCRYPTO=OFF \
                        -DENABLE_MBEDTLS=OFF \
                        -DENABLE_OPENSSL=OFF \
                        -DENABLE_WINDOWS_CRYPTO=OFF \
+                       -DENABLE_ZSTD=OFF \
                        -DBUILD_TOOLS=OFF \
                        -DBUILD_REGRESS=OFF \
                        -DBUILD_EXAMPLES=OFF \

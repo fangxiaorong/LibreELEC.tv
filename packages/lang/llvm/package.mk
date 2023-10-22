@@ -3,11 +3,11 @@
 # Copyright (C) 2018-present Team LibreELEC (https://libreelec.tv)
 
 PKG_NAME="llvm"
-PKG_VERSION="14.0.6"
-PKG_SHA256="8b3cfd7bc695bd6cea0f37f53f0981f34f87496e79e2529874fd03a2f9dd3a8a"
+PKG_VERSION="17.0.3"
+PKG_SHA256="be5a1e44d64f306bb44fce7d36e3b3993694e8e6122b2348608906283c176db8"
 PKG_LICENSE="Apache-2.0"
 PKG_SITE="http://llvm.org/"
-PKG_URL="https://github.com/llvm/llvm-project/releases/download/llvmorg-${PKG_VERSION}/llvm-project-${PKG_VERSION}.src.tar.xz"
+PKG_URL="https://github.com/llvm/llvm-project/releases/download/llvmorg-${PKG_VERSION}/llvm-project-${PKG_VERSION/-/}.src.tar.xz"
 PKG_DEPENDS_HOST="toolchain:host"
 PKG_DEPENDS_TARGET="toolchain llvm:host zlib"
 PKG_LONGDESC="Low-Level Virtual Machine (LLVM) is a compiler infrastructure."
@@ -20,7 +20,6 @@ PKG_CMAKE_OPTS_COMMON="-DLLVM_INCLUDE_TOOLS=ON \
                        -DLLVM_INCLUDE_EXAMPLES=OFF \
                        -DLLVM_BUILD_TESTS=OFF \
                        -DLLVM_INCLUDE_TESTS=OFF \
-                       -DLLVM_INCLUDE_GO_TESTS=OFF \
                        -DLLVM_BUILD_BENCHMARKS=OFF \
                        -DLLVM_INCLUDE_BENCHMARKS=OFF \
                        -DLLVM_BUILD_DOCS=OFF \
@@ -33,6 +32,7 @@ PKG_CMAKE_OPTS_COMMON="-DLLVM_INCLUDE_TOOLS=ON \
                        -DLLVM_ENABLE_ASSERTIONS=OFF \
                        -DLLVM_ENABLE_WERROR=OFF \
                        -DLLVM_ENABLE_ZLIB=OFF \
+                       -DLLVM_ENABLE_ZSTD=OFF \
                        -DLLVM_ENABLE_LIBXML2=OFF \
                        -DLLVM_BUILD_LLVM_DYLIB=ON \
                        -DLLVM_LINK_LLVM_DYLIB=ON \
@@ -48,15 +48,27 @@ pre_configure() {
 }
 
 pre_configure_host() {
-  case "${TARGET_ARCH}" in
-    "arm")
-      LLVM_BUILD_TARGETS="X86\;ARM"
-      ;;
+  case "${MACHINE_HARDWARE_NAME}" in
     "aarch64")
-      LLVM_BUILD_TARGETS="X86\;AArch64"
+      LLVM_BUILD_TARGETS="AArch64"
+      ;;
+    "arm")
+      LLVM_BUILD_TARGETS="ARM"
       ;;
     "x86_64")
-      LLVM_BUILD_TARGETS="X86\;AMDGPU"
+      LLVM_BUILD_TARGETS="X86"
+      ;;
+  esac
+
+  case "${TARGET_ARCH}" in
+    "aarch64")
+      LLVM_BUILD_TARGETS+="\;AArch64"
+      ;;
+    "arm")
+      LLVM_BUILD_TARGETS+="\;ARM"
+      ;;
+    "x86_64")
+      LLVM_BUILD_TARGETS+="\;X86\;AMDGPU"
       ;;
   esac
 

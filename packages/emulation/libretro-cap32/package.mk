@@ -2,21 +2,18 @@
 # Copyright (C) 2016-present Team LibreELEC (https://libreelec.tv)
 
 PKG_NAME="libretro-cap32"
-PKG_VERSION="dc70139d067291cccf7ce726dfa1da7de2f65ccf"
-PKG_SHA256="b236669fe745ada36beef3a82491be8b6fa3752be6bf32bbece6b03f40af1291"
-PKG_LICENSE="GPLv3"
+PKG_VERSION="0e3edf8ef45966b375c652efb044ffea46d33200"
+PKG_SHA256="aeb8be7b5cccd65c91ce6a58eb274ef26c6d15831fcf0a2f2d3ea04acf58d825"
+PKG_LICENSE="GPLv2"
 PKG_SITE="https://github.com/libretro/libretro-cap32"
 PKG_URL="https://github.com/libretro/libretro-cap32/archive/${PKG_VERSION}.tar.gz"
-PKG_DEPENDS_TARGET="toolchain kodi-platform"
-PKG_LONGDESC="game.libretro.cap32: cap32 for Kodi"
+PKG_DEPENDS_TARGET="toolchain"
+PKG_LONGDESC="caprice32 4.2.0 libretro"
+PKG_TOOLCHAIN="make"
 
 PKG_LIBNAME="cap32_libretro.so"
 PKG_LIBPATH="${PKG_LIBNAME}"
 PKG_LIBVAR="CAP32_LIB"
-
-make_target() {
-  make
-}
 
 makeinstall_target() {
   mkdir -p ${SYSROOT_PREFIX}/usr/lib/cmake/${PKG_NAME}

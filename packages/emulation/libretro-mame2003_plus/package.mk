@@ -2,24 +2,34 @@
 # Copyright (C) 2019-present Team LibreELEC (https://libreelec.tv)
 
 PKG_NAME="libretro-mame2003_plus"
-PKG_VERSION="713b74c1f94761bb1301b795c568983b55674b29"
-PKG_SHA256="eb988ae38b55ac695c2e411242b34bbdfc39950ea5f6c4840e39038871b89753"
-PKG_LICENSE="GPLv2"
+PKG_VERSION="71766e8f0cadb80eb6c735a76581a94b2c87769d"
+PKG_SHA256="6c306db2eeb65880ced66e5415a2251a49d863a6d8345d59017d08d483093212"
+PKG_LICENSE="MAME"
 PKG_SITE="https://github.com/libretro/mame2003-plus-libretro"
 PKG_URL="https://github.com/libretro/mame2003-plus-libretro/archive/${PKG_VERSION}.tar.gz"
 PKG_DEPENDS_TARGET="toolchain"
-PKG_LONGDESC="Updated 2018 version of MAME (0.78) with added game support plus many fixes and improvements"
+PKG_LONGDESC="MAME - Multiple Arcade Machine Emulator"
+PKG_TOOLCHAIN="make"
 
 PKG_LIBNAME="mame2003_plus_libretro.so"
 PKG_LIBPATH="${PKG_LIBNAME}"
 PKG_LIBVAR="MAME2003_PLUS_LIB"
 
-configure_target() {
-  export LD="${CC}"
+pre_make_target() {
+  PKG_MAKE_OPTS_TARGET="ARCH= CC=${CC} NATIVE_CC=${CC} LD=${CC}"
 }
 
 makeinstall_target() {
   mkdir -p ${SYSROOT_PREFIX}/usr/lib/cmake/${PKG_NAME}
   cp ${PKG_LIBPATH} ${SYSROOT_PREFIX}/usr/lib/${PKG_LIBNAME}
   echo "set(${PKG_LIBVAR} ${SYSROOT_PREFIX}/usr/lib/${PKG_LIBNAME})" > ${SYSROOT_PREFIX}/usr/lib/cmake/${PKG_NAME}/${PKG_NAME}-config.cmake
+
+  mkdir -p ${SYSROOT_PREFIX}/usr/share/libretro-database/mame2003-plus
+  cp -v metadata/mame2003-plus.xml ${SYSROOT_PREFIX}/usr/share/libretro-database/mame2003-plus/
+
+  mkdir -p ${SYSROOT_PREFIX}/usr/share/retroarch/system/mame2003-plus/samples
+  cp -rv metadata/artwork ${SYSROOT_PREFIX}/usr/share/retroarch/system/mame2003-plus
+  cp -v metadata/{cheat,hiscore,history}.dat ${SYSROOT_PREFIX}/usr/share/retroarch/system/mame2003-plus
+  # something must be in a folder in order to include it in the image, so why not some instructions
+  echo "Put your samples here." > ${SYSROOT_PREFIX}/usr/share/retroarch/system/mame2003-plus/samples/readme.txt
 }

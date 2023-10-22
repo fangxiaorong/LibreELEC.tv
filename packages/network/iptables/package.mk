@@ -3,11 +3,11 @@
 # Copyright (C) 2018-present Team LibreELEC (https://libreelec.tv)
 
 PKG_NAME="iptables"
-PKG_VERSION="1.8.8"
-PKG_SHA256="71c75889dc710676631553eb1511da0177bbaaf1b551265b912d236c3f51859f"
+PKG_VERSION="1.8.10"
+PKG_SHA256="5cc255c189356e317d070755ce9371eb63a1b783c34498fb8c30264f3cc59c9c"
 PKG_LICENSE="GPL"
 PKG_SITE="https://www.netfilter.org/"
-PKG_URL="https://www.netfilter.org/projects/iptables/files/${PKG_NAME}-${PKG_VERSION}.tar.bz2"
+PKG_URL="https://www.netfilter.org/projects/iptables/files/${PKG_NAME}-${PKG_VERSION}.tar.xz"
 PKG_DEPENDS_TARGET="toolchain linux:host libmnl libnftnl"
 PKG_LONGDESC="IP packet filter administration."
 PKG_TOOLCHAIN="autotools"

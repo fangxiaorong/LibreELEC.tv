@@ -3,14 +3,13 @@
 # Copyright (C) 2016-present Team LibreELEC (https://libreelec.tv)
 
 PKG_NAME="harfbuzz"
-PKG_VERSION="4.3.0"
-PKG_SHA256="a49628f4c4c8e6d8df95ef44935a93446cf2e46366915b0e3ca30df21fffb530"
+PKG_VERSION="8.2.2"
+PKG_SHA256="e433ad85fbdf57f680be29479b3f964577379aaf319f557eb76569f0ecbc90f3"
 PKG_LICENSE="GPL"
 PKG_SITE="http://www.freedesktop.org/wiki/Software/HarfBuzz"
 PKG_URL="https://github.com/harfbuzz/harfbuzz/releases/download/${PKG_VERSION}/harfbuzz-${PKG_VERSION}.tar.xz"
 PKG_DEPENDS_TARGET="toolchain cairo freetype glib"
 PKG_LONGDESC="HarfBuzz is an OpenType text shaping engine."
-PKG_TOOLCHAIN="meson"
 
 PKG_MESON_OPTS_TARGET="-Dbenchmark=disabled \
                        -Dcairo=enabled \

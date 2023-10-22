@@ -3,15 +3,19 @@
 # Copyright (C) 2018-present Team LibreELEC (https://libreelec.tv)
 
 PKG_NAME="glibc"
-PKG_VERSION="2.35"
-PKG_SHA256="5123732f6b67ccd319305efd399971d58592122bcc2a6518a1bd2510dd0cf52e"
+PKG_VERSION="2.38"
+PKG_SHA256="fb82998998b2b29965467bc1b69d152e9c307d2cf301c9eafb4555b770ef3fd2"
 PKG_LICENSE="GPL"
 PKG_SITE="https://www.gnu.org/software/libc/"
 PKG_URL="https://ftp.gnu.org/pub/gnu/glibc/${PKG_NAME}-${PKG_VERSION}.tar.xz"
 PKG_DEPENDS_TARGET="ccache:host autotools:host linux:host gcc:bootstrap pigz:host Python3:host"
 PKG_DEPENDS_INIT="glibc"
 PKG_LONGDESC="The Glibc package contains the main C library."
-PKG_BUILD_FLAGS="-gold"
+PKG_BUILD_FLAGS="+bfd"
+
+if [ "${TARGET_ARCH}" = "arm" ] || [ "${TARGET_ARCH}" = "aarch64" ]; then
+  PKG_PATCH_DIRS="widevine-arm"
+fi
 
 PKG_CONFIGURE_OPTS_TARGET="BASH_SHELL=/bin/sh \
                            ac_cv_path_PERL=no \
@@ -27,7 +31,7 @@ PKG_CONFIGURE_OPTS_TARGET="BASH_SHELL=/bin/sh \
                            --with-__thread \
                            --with-binutils=${BUILD}/toolchain/bin \
                            --with-headers=${SYSROOT_PREFIX}/usr/include \
-                           --enable-kernel=5.10.0 \
+                           --enable-kernel=6.1.0 \
                            --without-cvs \
                            --without-gd \
                            --disable-build-nscd \
@@ -105,9 +109,7 @@ post_makeinstall_target() {
 
   safe_remove ${INSTALL}/usr/lib/audit
   safe_remove ${INSTALL}/usr/lib/glibc
-  safe_remove ${INSTALL}/usr/lib/libc_pic
   safe_remove ${INSTALL}/usr/lib/*.o
-  safe_remove ${INSTALL}/usr/lib/*.map
   safe_remove ${INSTALL}/var
 
 # add UTF-8 charmap

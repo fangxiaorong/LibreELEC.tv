@@ -2,9 +2,9 @@
 # Copyright (C) 2019-present Team LibreELEC (https://libreelec.tv)
 
 PKG_NAME="pvr.freebox"
-PKG_VERSION="20.2.0-Nexus"
-PKG_SHA256="e01d331fa50606a592353fe291f396a0e95a4e685781fb9824bc9e6684b6f8b8"
-PKG_REV="1"
+PKG_VERSION="21.0.0-Omega"
+PKG_SHA256="d309e3d073d7dbfc387ae8498f4d0b974785d4d5621e79bd83058c8e73de67f2"
+PKG_REV="2"
 PKG_ARCH="any"
 PKG_LICENSE="GPL"
 PKG_SITE="https://github.com/aassif/pvr.freebox"

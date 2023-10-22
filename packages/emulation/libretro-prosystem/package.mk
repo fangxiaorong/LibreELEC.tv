@@ -2,13 +2,14 @@
 # Copyright (C) 2016-present Team LibreELEC (https://libreelec.tv)
 
 PKG_NAME="libretro-prosystem"
-PKG_VERSION="89e6df7b60d151310fedbe118fb472959a9dcd61"
-PKG_SHA256="8cca91100a437b920d932fdc1852b559cdae98c3bfb03ad6d3d5c675ab193317"
+PKG_VERSION="3db33d880ba78f3be0178e6ce651623731598137"
+PKG_SHA256="9a55031cc6fb7be3362538cfab824d4b8922b81be745ce096cacb1e057a34af0"
 PKG_LICENSE="GPLv2"
 PKG_SITE="https://github.com/libretro/prosystem-libretro"
 PKG_URL="https://github.com/libretro/prosystem-libretro/archive/${PKG_VERSION}.tar.gz"
-PKG_DEPENDS_TARGET="toolchain kodi-platform"
-PKG_LONGDESC="Port of ProSystem to libretro"
+PKG_DEPENDS_TARGET="toolchain"
+PKG_LONGDESC="Port of ProSystem to libretro."
+PKG_TOOLCHAIN="make"
 
 PKG_LIBNAME="prosystem_libretro.so"
 PKG_LIBPATH="${PKG_LIBNAME}"

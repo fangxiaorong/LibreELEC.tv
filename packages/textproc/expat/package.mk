@@ -3,11 +3,11 @@
 # Copyright (C) 2019-present Team LibreELEC (https://libreelec.tv)
 
 PKG_NAME="expat"
-PKG_VERSION="2.4.8"
-PKG_SHA256="a247a7f6bbb21cf2ca81ea4cbb916bfb9717ca523631675f99b3d4a5678dcd16"
+PKG_VERSION="2.5.0"
+PKG_SHA256="ef2420f0232c087801abf705e89ae65f6257df6b7931d37846a193ef2e8cdcbe"
 PKG_LICENSE="OSS"
-PKG_SITE="http://expat.sourceforge.net/"
-PKG_URL="https://github.com/libexpat/libexpat/releases/download/R_${PKG_VERSION//./_}/${PKG_NAME}-${PKG_VERSION}.tar.bz2"
+PKG_SITE="https://libexpat.github.io"
+PKG_URL="https://github.com/libexpat/libexpat/releases/download/R_${PKG_VERSION//./_}/${PKG_NAME}-${PKG_VERSION}.tar.xz"
 PKG_DEPENDS_HOST="toolchain:host"
 PKG_DEPENDS_TARGET="toolchain"
 PKG_LONGDESC="Expat is an XML parser library written in C."

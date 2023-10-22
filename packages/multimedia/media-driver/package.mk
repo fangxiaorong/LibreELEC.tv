@@ -2,8 +2,8 @@
 # Copyright (C) 2019-present Team LibreELEC (https://libreelec.tv)
 
 PKG_NAME="media-driver"
-PKG_VERSION="22.4.4"
-PKG_SHA256="19c3ef965ca155913719d138e297963b759f9b9d34d4ea85414d1c7b9d204253"
+PKG_VERSION="23.3.5"
+PKG_SHA256="67fd15654bb3c596feb8c85e81221de5632e11f598421c35adc4453d727f0130"
 PKG_ARCH="x86_64"
 PKG_LICENSE="MIT"
 PKG_SITE="https://01.org/linuxmedia"
@@ -15,4 +15,5 @@ PKG_CMAKE_OPTS_TARGET="-DBUILD_CMRTLIB=OFF \
                        -DBUILD_KERNELS=ON \
                        -DBUILD_TYPE=release \
                        -DENABLE_NONFREE_KERNELS=ON \
+                       -DMEDIA_BUILD_FATAL_WARNINGS=ON \
                        -DMEDIA_RUN_TEST_SUITE=OFF"

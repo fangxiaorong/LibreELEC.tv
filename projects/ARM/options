@@ -46,7 +46,7 @@
     KODI_DVDCSS_SUPPORT="no"
 
   # additional drivers to install
-    ADDITIONAL_DRIVERS=""
+    ADDITIONAL_DRIVERS+=""
 
   # build and install bluetooth support (yes / no)
     BLUETOOTH_SUPPORT="no"
@@ -99,9 +99,6 @@
   # build and install diskmounter support (udevil)
     UDEVIL="no"
 
-  # build and install hfs filesystem utilities (yes / no)
-    HFSTOOLS="no"
-
   # Xorg Graphic drivers to use (all / r300,r600,nvidia)
     GRAPHIC_DRIVERS="mesa"
 
@@ -124,7 +121,7 @@
     SWAP_SUPPORT="no"
 
   # additional packages to install
-    ADDITIONAL_PACKAGES=""
+    ADDITIONAL_PACKAGES+=""
 
   # build with installer (yes / no)
     INSTALLER_SUPPORT="no"

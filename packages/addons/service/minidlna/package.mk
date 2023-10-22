@@ -2,13 +2,13 @@
 # Copyright (C) 2018-present Team LibreELEC (https://libreelec.tv)
 
 PKG_NAME="minidlna"
-PKG_VERSION="1.3.0"
-PKG_SHA256="47d9b06b4c48801a4c1112ec23d24782728b5495e95ec2195bbe5c81bc2d3c63"
-PKG_REV="103"
+PKG_VERSION="1.3.3"
+PKG_SHA256="39026c6d4a139b9180192d1c37225aa3376fdf4f1a74d7debbdbb693d996afa4"
+PKG_REV="0"
 PKG_ARCH="any"
 PKG_LICENSE="BSD-3c/GPLv2"
 PKG_SITE="https://sourceforge.net/projects/minidlna/"
-PKG_URL="https://downloads.sourceforge.net/project/minidlna/minidlna/1.3.0/minidlna-${PKG_VERSION}.tar.gz"
+PKG_URL="https://downloads.sourceforge.net/project/minidlna/minidlna/${PKG_VERSION}/minidlna-${PKG_VERSION}.tar.gz"
 PKG_DEPENDS_TARGET="toolchain ffmpeg flac libexif libiconv libid3tag libjpeg-turbo libogg libvorbis sqlite"
 PKG_SECTION="service"
 PKG_SHORTDESC="MiniDLNA (ReadyMedia): a fully compliant DLNA/UPnP-AV server"

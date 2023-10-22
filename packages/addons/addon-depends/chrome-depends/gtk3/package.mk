@@ -3,15 +3,14 @@
 # Copyright (C) 2018-present Team LibreELEC (https://libreelec.tv)
 
 PKG_NAME="gtk3"
-PKG_VERSION="3.24.31"
-PKG_SHA256="423c3e7fdb4c459ee889e35fd4d71fd2623562541c1041b11c07e5ad1ff10bf9"
+PKG_VERSION="3.24.38"
+PKG_SHA256="ce11decf018b25bdd8505544a4f87242854ec88be054d9ade5f3a20444dd8ee7"
 PKG_LICENSE="LGPL"
-PKG_SITE="http://www.gtk.org/"
+PKG_SITE="https://www.gtk.org/"
 PKG_URL="https://ftp.gnome.org/pub/gnome/sources/gtk+/${PKG_VERSION:0:4}/gtk+-${PKG_VERSION}.tar.xz"
 PKG_DEPENDS_TARGET="toolchain at-spi2-atk atk cairo gdk-pixbuf glib libX11 libXi libXrandr libepoxy pango libxkbcommon"
 PKG_DEPENDS_CONFIG="libXft pango gdk-pixbuf shared-mime-info"
 PKG_LONGDESC="A library for creating graphical user interfaces for the X Window System."
-PKG_TOOLCHAIN="meson"
 PKG_BUILD_FLAGS="-sysroot"
 
 PKG_MESON_OPTS_TARGET="-Dbroadway_backend=false \

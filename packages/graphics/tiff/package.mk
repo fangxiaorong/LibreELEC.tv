@@ -3,28 +3,24 @@
 # Copyright (C) 2018-present Team LibreELEC (https://libreelec.tv)
 
 PKG_NAME="tiff"
-PKG_VERSION="4.4.0"
-PKG_SHA256="917223b37538959aca3b790d2d73aa6e626b688e02dcda272aec24c2f498abed"
+PKG_VERSION="4.6.0"
+PKG_SHA256="88b3979e6d5c7e32b50d7ec72fb15af724f6ab2cbf7e10880c360a77e4b5d99a"
 PKG_LICENSE="OSS"
 PKG_SITE="http://www.remotesensing.org/libtiff/"
 PKG_URL="http://download.osgeo.org/libtiff/${PKG_NAME}-${PKG_VERSION}.tar.gz"
 PKG_DEPENDS_TARGET="toolchain libjpeg-turbo zlib"
 PKG_LONGDESC="libtiff is a library for reading and writing TIFF files."
-PKG_BUILD_FLAGS="+pic"
-PKG_TOOLCHAIN="configure"
+PKG_BUILD_FLAGS="+pic -gold"
 
-PKG_CONFIGURE_OPTS_TARGET="--enable-static \
-                           --disable-shared \
-                           --disable-mdi \
-                           --disable-jbig \
-                           --disable-lzma \
-                           --disable-zstd \
-                           --disable-webp \
-                           --enable-cxx \
-                           --with-jpeg-lib-dir=${SYSROOT_PREFIX}/usr/lib \
-                           --with-jpeg-include-dir=${SYSROOT_PREFIX}/usr/include \
-                           --without-x"
-
-post_makeinstall_target() {
-  rm -rf ${INSTALL}/usr/bin
-}
+PKG_CMAKE_OPTS_TARGET="-DBUILD_SHARED_LIBS=OFF \
+                       -Dtiff-tools=OFF \
+                       -Dtiff-tests=OFF \
+                       -Dtiff-contrib=OFF \
+                       -Dtiff-docs=OFF \
+                       -Dmdi=OFF \
+                       -Djbig=OFF \
+                       -Dlzma=OFF \
+                       -Dzstd=OFF \
+                       -Dwebp=OFF \
+                       -Dcxx=ON \
+                       -Djpeg=ON"

@@ -2,29 +2,24 @@
 # Copyright (C) 2016-present Team LibreELEC (https://libreelec.tv)
 
 PKG_NAME="libretro-mrboom"
-PKG_VERSION="5.2"
-PKG_SUBVER=".454d614"
-PKG_SHA256="50e4fe4bc74b23ac441499c756c4575dfe9faab9e787a3ab942a856ac63cf10d"
+PKG_VERSION="2d603a2dccff15db944e04ed6a1cefc4750e463f"
+PKG_SHA256="2e30ff53ea0a77062c22cf44f81e4eb8130d3f98757d0c4c0d856a9030eb1a8c"
 PKG_LICENSE="MIT"
-PKG_SITE="https://github.com/Javanaise/mrboom-libretro"
-PKG_URL="https://github.com/Javanaise/mrboom-libretro/releases/download/${PKG_VERSION}/MrBoom-src-${PKG_VERSION}${PKG_SUBVER}.tar.gz"
-PKG_DEPENDS_TARGET="toolchain kodi-platform"
-PKG_LONGDESC="game.libretro.mrboom: mrboom for Kodi"
+PKG_SITE="https://github.com/libretro/mrboom-libretro"
+PKG_URL="https://github.com/kodi-game/mrboom-libretro/archive/${PKG_VERSION}.tar.gz"
+PKG_DEPENDS_TARGET="toolchain"
+PKG_LONGDESC="Mr.Boom is a 8 players Bomberman clone for RetroArch/Libretro"
+PKG_TOOLCHAIN="make"
 
 PKG_LIBNAME="mrboom_libretro.so"
 PKG_LIBPATH="${PKG_LIBNAME}"
 PKG_LIBVAR="MRBOOM_LIB"
 
-pre_make_target() {
-  # Disable NEON otherwise build fails
-  if target_has_feature neon; then
-    CFLAGS+=" -DDONT_WANT_ARM_OPTIMIZATIONS"
-  fi
-}
+PKG_MAKE_OPTS_TARGET=""
 
-make_target() {
-  make
-}
+if target_has_feature neon ; then
+  PKG_MAKE_OPTS_TARGET+=" HAVE_NEON=1"
+fi
 
 makeinstall_target() {
   mkdir -p ${SYSROOT_PREFIX}/usr/lib/cmake/${PKG_NAME}

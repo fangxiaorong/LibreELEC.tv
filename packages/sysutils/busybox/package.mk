@@ -3,16 +3,15 @@
 # Copyright (C) 2018-present Team LibreELEC (https://libreelec.tv)
 
 PKG_NAME="busybox"
-PKG_VERSION="1.32.1"
-PKG_SHA256="9d57c4bd33974140fd4111260468af22856f12f5b5ef7c70c8d9b75c712a0dee"
+PKG_VERSION="1.36.1"
+PKG_SHA256="b8cc24c9574d809e7279c3be349795c5d5ceb6fdf19ca709f80cde50e47de314"
 PKG_LICENSE="GPL"
 PKG_SITE="http://www.busybox.net"
 PKG_URL="https://busybox.net/downloads/${PKG_NAME}-${PKG_VERSION}.tar.bz2"
-PKG_DEPENDS_TARGET="toolchain hdparm dosfstools e2fsprogs zip usbutils parted procps-ng gptfdisk libtirpc"
+PKG_DEPENDS_TARGET="toolchain hdparm dosfstools e2fsprogs zip usbutils parted procps-ng libtirpc"
 PKG_DEPENDS_INIT="toolchain libtirpc"
 PKG_LONGDESC="BusyBox combines tiny versions of many common UNIX utilities into a single small executable."
-# busybox fails to build with GOLD support enabled with binutils-2.25
-PKG_BUILD_FLAGS="-parallel -gold"
+PKG_BUILD_FLAGS="-parallel"
 
 # nano text editor
 if [ "${NANO_EDITOR}" = "yes" ]; then
@@ -121,6 +120,7 @@ makeinstall_target() {
     cp ${PKG_DIR}/scripts/sudo ${INSTALL}/usr/bin/
     cp ${PKG_DIR}/scripts/pastebinit ${INSTALL}/usr/bin/
       ln -sf pastebinit ${INSTALL}/usr/bin/paste
+    cp ${PKG_DIR}/scripts/vfd-clock ${INSTALL}/usr/bin/
 
   mkdir -p ${INSTALL}/usr/sbin
     cp ${PKG_DIR}/scripts/kernel-overlays-setup ${INSTALL}/usr/sbin
@@ -171,6 +171,7 @@ post_install() {
   enable_service ledfix.service
   enable_service shell.service
   enable_service show-version.service
+  enable_service vfd-clock.service
   enable_service var.mount
   enable_service locale.service
   listcontains "${FIRMWARE}" "rpi-eeprom" && enable_service rpi-flash-firmware.service

@@ -2,25 +2,42 @@
 # Copyright (C) 2016-present Team LibreELEC (https://libreelec.tv)
 
 PKG_NAME="libretro-vecx"
-PKG_VERSION="28d6efc8972313903d0802a736ff8c3bc115e78f"
-PKG_SHA256="8584af54ce532c4bb37a20a023eda9fcfa90a5d2bea66d5d65abeeab183836eb"
+PKG_VERSION="a401c268e425dc8ae6a301e7fdb9a9e96f39b8ea"
+PKG_SHA256="348c335607af6bdbe12f72b4252110a8eac2a65e7f38fc8e746e697724ad1f4e"
 PKG_LICENSE="GPLv3"
 PKG_SITE="https://github.com/libretro/libretro-vecx"
 PKG_URL="https://github.com/libretro/libretro-vecx/archive/${PKG_VERSION}.tar.gz"
-PKG_DEPENDS_TARGET="toolchain kodi-platform"
-PKG_LONGDESC="game.libretro.vecx: vecx for Kodi"
+PKG_DEPENDS_TARGET="toolchain"
+PKG_LONGDESC="libretro adaptation of vecx"
+PKG_TOOLCHAIN="make"
 
 PKG_LIBNAME="vecx_libretro.so"
 PKG_LIBPATH="${PKG_LIBNAME}"
 PKG_LIBVAR="VECX_LIB"
 
-make_target() {
-  if [ "${OPENGL_SUPPORT}" = no ]; then
-    HAS_GLES=1 make
+PKG_MAKE_OPTS_TARGET="-f Makefile.libretro"
+
+if [ "${OPENGL_SUPPORT}" = "yes" ]; then
+  PKG_DEPENDS_TARGET+=" ${OPENGL}"
+fi
+
+if [ "${OPENGLES_SUPPORT}" = "yes" ]; then
+  PKG_DEPENDS_TARGET+=" ${OPENGLES}"
+fi
+
+if [ "${VULKAN_SUPPORT}" = "yes" ]; then
+  PKG_DEPENDS_TARGET+=" ${VULKAN}"
+fi
+
+if [ "${PROJECT}" = "RPi" ]; then
+  if [ "${OPENGLES}" = "mesa" ]; then
+    PKG_MAKE_OPTS_TARGET+=" platform=rpi-mesa"
   else
-    make
+    PKG_MAKE_OPTS_TARGET+=" platform=rpi"
   fi
-}
+elif [ "${OPENGLES_SUPPORT}" = "yes" ]; then
+  PKG_MAKE_OPTS_TARGET+=" HAS_GLES=1 GLES=1"
+fi
 
 makeinstall_target() {
   mkdir -p ${SYSROOT_PREFIX}/usr/lib/cmake/${PKG_NAME}
