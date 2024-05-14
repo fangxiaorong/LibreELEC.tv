@@ -3,8 +3,8 @@
 # Copyright (C) 2018-present Team LibreELEC (https://libreelec.tv)
 
 PKG_NAME="elfutils"
-PKG_VERSION="0.189"
-PKG_SHA256="39bd8f1a338e2b7cd4abc3ff11a0eddc6e690f69578a57478d8179b4148708c8"
+PKG_VERSION="0.191"
+PKG_SHA256="df76db71366d1d708365fc7a6c60ca48398f14367eb2b8954efc8897147ad871"
 PKG_LICENSE="GPL"
 PKG_SITE="https://sourceware.org/elfutils/"
 PKG_URL="https://sourceware.org/elfutils/ftp/${PKG_VERSION}/${PKG_NAME}-${PKG_VERSION}.tar.bz2"
@@ -39,6 +39,14 @@ PKG_CONFIGURE_OPTS_TARGET="utrace_cv_cc_biarch=false \
                            --with-zlib \
                            --without-bzlib \
                            --without-lzma"
+
+pre_configure_host() {
+  HOST_CONFIGURE_OPTS=$(echo ${HOST_CONFIGURE_OPTS} | sed -e "s|--disable-static||" -e "s|--enable-shared||")
+}
+
+pre_configure_target() {
+  TARGET_CONFIGURE_OPTS=$(echo ${TARGET_CONFIGURE_OPTS} | sed -e "s|--disable-static||" -e "s|--enable-shared||")
+}
 
 post_makeinstall_target() {
   # don't install progs into sysroot

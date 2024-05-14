@@ -3,8 +3,8 @@
 # Copyright (C) 2019-present Team LibreELEC (https://libreelec.tv)
 
 PKG_NAME="ethtool"
-PKG_VERSION="6.5"
-PKG_SHA256="814171ea4b8026b081c0741dbbf32e6968311483ecf64711232faec2ac70a14c"
+PKG_VERSION="6.7"
+PKG_SHA256="c3ae526b01ce4d8df6c794ab170de4a4104d111ea8d8db3f1fd7c25fcb905619"
 PKG_LICENSE="GPL"
 PKG_SITE="https://www.kernel.org/pub/software/network/ethtool/"
 PKG_URL="https://www.kernel.org/pub/software/network/ethtool/${PKG_NAME}-${PKG_VERSION}.tar.xz"

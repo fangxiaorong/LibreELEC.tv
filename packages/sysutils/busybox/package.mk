@@ -18,11 +18,6 @@ if [ "${NANO_EDITOR}" = "yes" ]; then
   PKG_DEPENDS_TARGET+=" nano"
 fi
 
-# nfs support
-if [ "${NFS_SUPPORT}" = yes ]; then
-  PKG_DEPENDS_TARGET+=" rpcbind"
-fi
-
 if [ "${TARGET_ARCH}" = "x86_64" ]; then
   PKG_DEPENDS_TARGET+=" pciutils"
 fi
@@ -108,6 +103,9 @@ makeinstall_target() {
       cp ${PKG_DIR}/scripts/update-bootloader-edid-rpi ${INSTALL}/usr/bin/update-bootloader-edid
       cp ${PKG_DIR}/scripts/getedid-drm ${INSTALL}/usr/bin/getedid
     fi
+    if [ "${PROJECT}" = "Amlogic" ]; then
+      cp ${PKG_DIR}/scripts/update-bootloader-edid-amlogic ${INSTALL}/usr/bin/getedid
+    fi
     cp ${PKG_DIR}/scripts/createlog ${INSTALL}/usr/bin/
     cp ${PKG_DIR}/scripts/dthelper ${INSTALL}/usr/bin
       ln -sf dthelper ${INSTALL}/usr/bin/dtfile
@@ -119,6 +117,8 @@ makeinstall_target() {
     cp ${PKG_DIR}/scripts/apt-get ${INSTALL}/usr/bin/
     cp ${PKG_DIR}/scripts/sudo ${INSTALL}/usr/bin/
     cp ${PKG_DIR}/scripts/pastebinit ${INSTALL}/usr/bin/
+      sed -e "s/@DISTRONAME@-@OS_VERSION@/${DISTRONAME}-${OS_VERSION}/g" \
+          -i ${INSTALL}/usr/bin/pastebinit
       ln -sf pastebinit ${INSTALL}/usr/bin/paste
     cp ${PKG_DIR}/scripts/vfd-clock ${INSTALL}/usr/bin/
 
@@ -130,10 +130,6 @@ makeinstall_target() {
     cp ${PKG_DIR}/scripts/fs-resize ${INSTALL}/usr/lib/libreelec
     sed -e "s/@DISTRONAME@/${DISTRONAME}/g" \
         -i ${INSTALL}/usr/lib/libreelec/fs-resize
-
-    if listcontains "${FIRMWARE}" "rpi-eeprom"; then
-      cp ${PKG_DIR}/scripts/rpi-flash-firmware ${INSTALL}/usr/lib/libreelec
-    fi
 
   mkdir -p ${INSTALL}/usr/lib/systemd/system-generators/
     cp ${PKG_DIR}/scripts/libreelec-target-generator ${INSTALL}/usr/lib/systemd/system-generators/
@@ -174,7 +170,6 @@ post_install() {
   enable_service vfd-clock.service
   enable_service var.mount
   enable_service locale.service
-  listcontains "${FIRMWARE}" "rpi-eeprom" && enable_service rpi-flash-firmware.service
 
   # cron support
   if [ "${CRON_SUPPORT}" = "yes" ]; then

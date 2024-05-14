@@ -3,12 +3,12 @@
 
 PKG_NAME="rpi-tools"
 PKG_VERSION="1.0"
-PKG_REV="1"
+PKG_REV="0"
 PKG_ARCH="arm aarch64"
 PKG_LICENSE="GPL"
 PKG_SITE="https://libreelec.tv"
 PKG_URL=""
-PKG_DEPENDS_TARGET="toolchain lg-gpio gpiozero colorzero lan951x-led-ctl patchelf:host"
+PKG_DEPENDS_TARGET="toolchain lg-gpio gpiozero colorzero lan951x-led-ctl"
 PKG_SECTION="virtual"
 PKG_SHORTDESC="A bundle of tools and programs for use on the Raspberry Pi"
 PKG_LONGDESC="This bundle currently includes lg-gpio, gpiozero and lan951x-led-ctl"
@@ -24,7 +24,7 @@ addon() {
   mkdir -p ${ADDON_BUILD}/${PKG_ADDON_ID}/lib/
     cp -PR $(get_build_dir lg-gpio)/liblgpio.so* ${ADDON_BUILD}/${PKG_ADDON_ID}/lib/
     cp -PR $(get_build_dir lg-gpio)/PY_LGPIO/build/lib.linux*/* ${ADDON_BUILD}/${PKG_ADDON_ID}/lib/
-    patchelf --add-rpath '$ORIGIN' ${ADDON_BUILD}/${PKG_ADDON_ID}/lib/_lgpio*.so
+    patchelf --add-rpath '${ORIGIN}' ${ADDON_BUILD}/${PKG_ADDON_ID}/lib/_lgpio*.so
     cp -PR $(get_build_dir gpiozero)/gpiozero ${ADDON_BUILD}/${PKG_ADDON_ID}/lib/
     cp -PR $(get_build_dir colorzero)/colorzero ${ADDON_BUILD}/${PKG_ADDON_ID}/lib/
 

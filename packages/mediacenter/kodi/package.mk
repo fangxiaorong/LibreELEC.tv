@@ -3,12 +3,13 @@
 # Copyright (C) 2017-present Team LibreELEC (https://libreelec.tv)
 
 PKG_NAME="kodi"
-PKG_VERSION="21.0b1-Omega"
-PKG_SHA256="9fa84025eea49c633ba7cce4177c5843a74f591736412842ecc7fb8cbd12ab88"
+PKG_VERSION="21.0-Omega"
+PKG_SHA256="7f54c1fd8456ac46221fbc85e447362bdc209163c6cb19fca98d106560071b7c"
 PKG_LICENSE="GPL"
 PKG_SITE="http://www.kodi.tv"
 PKG_URL="https://github.com/xbmc/xbmc/archive/${PKG_VERSION}.tar.gz"
 PKG_DEPENDS_TARGET="toolchain JsonSchemaBuilder:host TexturePacker:host Python3 zlib systemd lzo pcre swig:host libass curl fontconfig fribidi tinyxml tinyxml2 libjpeg-turbo freetype libcdio taglib libxml2 libxslt rapidjson sqlite ffmpeg crossguid libdvdnav libfmt lirc libfstrcmp flatbuffers:host flatbuffers libudfread spdlog"
+PKG_DEPENDS_UNPACK="commons-lang3 commons-text groovy"
 PKG_DEPENDS_HOST="toolchain"
 PKG_LONGDESC="A free and open source cross-platform media player."
 PKG_BUILD_FLAGS="+speed"
@@ -259,6 +260,9 @@ configure_package() {
                          -DENABLE_INTERNAL_FLATBUFFERS=OFF \
                          -DENABLE_LCMS2=OFF \
                          -DADDONS_CONFIGURE_AT_STARTUP=OFF \
+                         -Dgroovy_SOURCE_DIR=$(get_build_dir groovy) \
+                         -Dapache-commons-lang_SOURCE_DIR=$(get_build_dir commons-lang3) \
+                         -Dapache-commons-text_SOURCE_DIR=$(get_build_dir commons-text) \
                          ${PKG_KODI_USE_LTO} \
                          ${PKG_KODI_LINKER} \
                          ${KODI_ARCH} \
@@ -313,8 +317,7 @@ pre_configure_target() {
 
 post_makeinstall_target() {
   mkdir -p ${INSTALL}/.noinstall
-    mv ${INSTALL}/usr/share/kodi/addons/skin.estouchy \
-       ${INSTALL}/usr/share/kodi/addons/skin.estuary \
+    mv ${INSTALL}/usr/share/kodi/addons/skin.estuary \
        ${INSTALL}/usr/share/kodi/addons/service.xbmc.versioncheck \
        ${INSTALL}/.noinstall
 
@@ -416,7 +419,6 @@ post_makeinstall_target() {
   # update addon manifest
   ADDON_MANIFEST=${INSTALL}/usr/share/kodi/system/addon-manifest.xml
   xmlstarlet ed -L -d "/addons/addon[text()='service.xbmc.versioncheck']" ${ADDON_MANIFEST}
-  xmlstarlet ed -L -d "/addons/addon[text()='skin.estouchy']" ${ADDON_MANIFEST}
   xmlstarlet ed -L --subnode "/addons" -t elem -n "addon" -v "repository.libreelec.tv" ${ADDON_MANIFEST}
   if [ -n "${DISTRO_PKG_SETTINGS}" ]; then
     xmlstarlet ed -L --subnode "/addons" -t elem -n "addon" -v "${DISTRO_PKG_SETTINGS_ID}" ${ADDON_MANIFEST}

@@ -6,8 +6,8 @@ PKG_NAME="xf86-video-nvidia"
 # Remember to run "python3 packages/x11/driver/xf86-video-nvidia/scripts/make_nvidia_udev.py" and commit
 # changes to "packages/x11/driver/xf86-video-nvidia/udev.d/96-nvidia.rules" whenever bumping version.
 # The build host may require installation of python3-lxml and python3-requests packages.
-PKG_VERSION="470.199.02"
-PKG_SHA256="9c86f9ef6aceaf2b292407aa161b98d817b2eb10a615f971d29a20c2a748ad09"
+PKG_VERSION="550.78"
+PKG_SHA256="3822a03d21607da36dd799199667da6380e2ec15ef80d1150c7c72a8d1f84eb9"
 PKG_ARCH="x86_64"
 PKG_LICENSE="nonfree"
 PKG_SITE="https://www.nvidia.com/en-us/drivers/unix/"
@@ -89,6 +89,10 @@ makeinstall_target() {
     mkdir -p ${INSTALL}/usr/share/vulkan/implicit_layer.d
       cp -P nvidia_layers.json ${INSTALL}/usr/share/vulkan/icd.d
   fi
+
+  # nvidia-gpucomp
+  mkdir -p ${INSTALL}/usr/lib
+    cp -P libnvidia-gpucomp.so.${PKG_VERSION} ${INSTALL}/usr/lib
 
   # nvidia-tls
   mkdir -p ${INSTALL}/usr/lib

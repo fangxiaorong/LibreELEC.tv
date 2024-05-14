@@ -3,8 +3,8 @@
 # Copyright (C) 2018-present Team LibreELEC (https://libreelec.tv)
 
 PKG_NAME="systemd"
-PKG_VERSION="254.5"
-PKG_SHA256="41873783aa1c680e10d2f2626797a1c2fef8018d69b68c8c77639e140ee7846d"
+PKG_VERSION="255.5"
+PKG_SHA256="95e419f0bd80fde9f169533e070348beb94073d9a58daf505d719ed3ebfd2411"
 PKG_LICENSE="LGPL2.1+"
 PKG_SITE="http://www.freedesktop.org/wiki/Software/systemd"
 PKG_URL="https://github.com/systemd/systemd-stable/archive/v${PKG_VERSION}.tar.gz"
@@ -18,46 +18,46 @@ PKG_MESON_OPTS_TARGET="--libdir=/usr/lib \
                        -Ddefault-hierarchy=unified \
                        -Dtty-gid=5 \
                        -Dtests=false \
-                       -Dseccomp=false \
-                       -Dselinux=false \
-                       -Dapparmor=false \
-                       -Dpolkit=false \
-                       -Dacl=false \
-                       -Daudit=false \
-                       -Dblkid=true \
-                       -Dfdisk=false \
-                       -Dkmod=true \
-                       -Dpam=false \
-                       -Dpwquality=false \
-                       -Dmicrohttpd=false \
-                       -Dlibcryptsetup=false \
-                       -Dlibcurl=false \
-                       -Dlibidn=false \
-                       -Dlibidn2=true \
-                       -Dlibiptc=false \
-                       -Dqrencode=false \
-                       -Dgcrypt=false \
-                       -Dgnutls=false \
-                       -Dopenssl=false \
-                       -Dp11kit=false \
-                       -Delfutils=false \
-                       -Dzlib=false \
-                       -Dbzip2=false \
-                       -Dxz=false \
-                       -Dlz4=false \
-                       -Dzstd=false \
-                       -Dxkbcommon=false \
-                       -Dpcre2=false \
-                       -Dglib=false \
-                       -Ddbus=false \
+                       -Dseccomp=disabled \
+                       -Dselinux=disabled \
+                       -Dapparmor=disabled \
+                       -Dpolkit=disabled \
+                       -Dacl=disabled \
+                       -Daudit=disabled \
+                       -Dblkid=enabled \
+                       -Dfdisk=disabled \
+                       -Dkmod=enabled \
+                       -Dpam=disabled \
+                       -Dpwquality=disabled \
+                       -Dmicrohttpd=disabled \
+                       -Dlibcryptsetup=disabled \
+                       -Dlibcurl=disabled \
+                       -Dlibidn=disabled \
+                       -Dlibidn2=enabled \
+                       -Dlibiptc=disabled \
+                       -Dqrencode=disabled \
+                       -Dgcrypt=disabled \
+                       -Dgnutls=disabled \
+                       -Dopenssl=disabled \
+                       -Dp11kit=disabled \
+                       -Delfutils=disabled \
+                       -Dzlib=disabled \
+                       -Dbzip2=disabled \
+                       -Dxz=disabled \
+                       -Dlz4=disabled \
+                       -Dzstd=disabled \
+                       -Dxkbcommon=disabled \
+                       -Dpcre2=disabled \
+                       -Dglib=disabled \
+                       -Ddbus=disabled \
                        -Ddefault-dnssec=no \
-                       -Dimportd=false \
-                       -Dremote=false \
+                       -Dimportd=disabled \
+                       -Dremote=disabled \
                        -Dutmp=true \
                        -Dhibernate=false \
                        -Denvironment-d=false \
                        -Dbinfmt=false \
-                       -Drepart=false \
+                       -Drepart=disabled \
                        -Dcoredump=false \
                        -Dresolve=false \
                        -Dlogind=true \
@@ -66,7 +66,7 @@ PKG_MESON_OPTS_TARGET="--libdir=/usr/lib \
                        -Dmachined=false \
                        -Dportabled=false \
                        -Duserdb=false \
-                       -Dhomed=false \
+                       -Dhomed=disabled \
                        -Dnetworkd=false \
                        -Dtimedated=false \
                        -Dtimesyncd=true \
@@ -86,11 +86,11 @@ PKG_MESON_OPTS_TARGET="--libdir=/usr/lib \
                        -Dgshadow=false \
                        -Didn=false \
                        -Dnss-myhostname=false \
-                       -Dnss-mymachines=false \
-                       -Dnss-resolve=false \
+                       -Dnss-mymachines=disabled \
+                       -Dnss-resolve=disabled \
                        -Dnss-systemd=false \
-                       -Dman=false \
-                       -Dhtml=false \
+                       -Dman=disabled \
+                       -Dhtml=disabled \
                        -Dlink-udev-shared=true \
                        -Dlink-systemctl-shared=true \
                        -Dlink-networkd-shared=false \
@@ -158,6 +158,9 @@ post_makeinstall_target() {
   # remove nspawn
   safe_remove ${INSTALL}/usr/bin/systemd-nspawn
   safe_remove ${INSTALL}/usr/lib/systemd/system/systemd-nspawn@.service
+
+  # remove timedatectl
+  safe_remove ${INSTALL}/usr/bin/timedatectl
 
   # remove unneeded generators
   for gen in ${INSTALL}/usr/lib/systemd/system-generators/*; do
@@ -273,20 +276,26 @@ post_install() {
   add_group systemd-network 193
   add_user systemd-network x 193 193 "systemd-network" "/" "/bin/sh"
 
-  add_group audio 63 pipewire
+  add_group systemd-oom 194
+  add_user systemd-oom x 194 194 "systemd Userspace OOM Killer" "/" "/bin/false"
+
+  add_group adm 4
+  add_group tty 5
+  add_group disk 6
+  add_group lp 7
+  add_group kmem 9
+  add_group wheel 10
   add_group cdrom 11
   add_group dialout 18
-  add_group disk 6
   add_group floppy 19
-  add_group kmem 9
-  add_group kvm 10
-  add_group lp 7
-  add_group render 12
-  add_group tape 33
-  add_group tty 5
-  add_group video 39 pipewire
   add_group utmp 22
-  add_group input 199
+  add_group tape 33
+  add_group kvm 36
+  add_group video 39 pipewire
+  add_group audio 63 pipewire
+  add_group input 104
+  add_group render 105
+  add_group sgx 106
 
   enable_service machine-id.service
   enable_service debugconfig.service

@@ -2,8 +2,8 @@
 # Copyright (C) 2016-present Team LibreELEC (https://libreelec.tv)
 
 PKG_NAME="libretro-pcsx-rearmed"
-PKG_VERSION="4373e29de72c917dbcd04ec2a5fb685e69d9def3"
-PKG_SHA256="85560938cdad30be5994e935d35b0b4b8a12f6d2ca39c0034bfaa3d98cbcb11a"
+PKG_VERSION="1fec8a9574a8128c9b64f79a5c1f72bbd86ac2bf"
+PKG_SHA256="356085035cd3494bd59f529be3c597583df0008c251fb56b87d46774fcd809c0"
 PKG_LICENSE="GPLv2"
 PKG_SITE="https://github.com/libretro/pcsx_rearmed"
 PKG_URL="https://github.com/libretro/pcsx_rearmed/archive/${PKG_VERSION}.tar.gz"
@@ -31,7 +31,7 @@ fi
 
 if [ "${ARCH}" = "arm" ]; then
   PKG_MAKE_OPTS_TARGET+=" DYNAREC=ari64"
-  if target_has_feature neon ; then
+  if target_has_feature neon; then
     PKG_MAKE_OPTS_TARGET+=" HAVE_NEON_ASM=1 BUILTIN_GPU=neon"
   else
     PKG_MAKE_OPTS_TARGET+=" HAVE_NEON_ASM=0 BUILTIN_GPU=unai"
