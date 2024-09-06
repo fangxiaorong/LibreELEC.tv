@@ -2,8 +2,8 @@
 # Copyright (C) 2021-present Team LibreELEC (https://libreelec.tv)
 
 PKG_NAME="nvidia"
-PKG_VERSION="550.78"
-PKG_SHA256="3822a03d21607da36dd799199667da6380e2ec15ef80d1150c7c72a8d1f84eb9"
+PKG_VERSION="550.107.02"
+PKG_SHA256="94299354125c6aa1c98fd7f9ebb26a73b6a39205c84b4790888c1949c890b0a3"
 PKG_ARCH="x86_64"
 PKG_LICENSE="nonfree"
 PKG_SITE="https://www.nvidia.com/en-us/drivers/unix/"
@@ -96,9 +96,9 @@ makeinstall_target() {
       ln -sf libnvidia-vulkan-producer.so.1              ${INSTALL}/usr/lib/libnvidia-vulkan-producer.so
 
     mkdir -p ${INSTALL}/usr/share/vulkan/implicit_layer.d
-      sed "s#libGLX_nvidia.so.0#libEGL_nvidia.so.0#" nvidia_layers.json > ${INSTALL}/usr/share/vulkan/implicit_layer.d/nvidia_layers.json
+      sed "s#libGLX_nvidia.so.0#libEGL_nvidia.so.0#" nvidia_layers.json >${INSTALL}/usr/share/vulkan/implicit_layer.d/nvidia_layers.json
     mkdir -p ${INSTALL}/usr/share/vulkan/icd.d
-      sed "s#libGLX_nvidia.so.0#libEGL_nvidia.so.0#" nvidia_icd.json > ${INSTALL}/usr/share/vulkan/icd.d/nvidia_icd.json
+      sed "s#libGLX_nvidia.so.0#libEGL_nvidia.so.0#" nvidia_icd.json >${INSTALL}/usr/share/vulkan/icd.d/nvidia_icd.json
   fi
 
   # CUDA

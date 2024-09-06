@@ -8,7 +8,7 @@ PKG_SHA256="9b16b8731d78e596b4be0d720428ca42df642bb2d78342881ff7f5bc29fc9623"
 PKG_LICENSE="GPL-3.0-only"
 PKG_SITE="https://ffmpeg.org"
 PKG_URL="http://ffmpeg.org/releases/ffmpeg-${PKG_VERSION}.tar.xz"
-PKG_DEPENDS_TARGET="toolchain zlib bzip2 openssl speex"
+PKG_DEPENDS_TARGET="toolchain zlib bzip2 openssl speex libxml2"
 PKG_LONGDESC="FFmpeg is a complete, cross-platform solution to record, convert and stream audio and video."
 PKG_PATCH_DIRS="libreelec"
 
@@ -26,8 +26,9 @@ case "${PROJECT}" in
   *)
     PKG_PATCH_DIRS+=" v4l2-request v4l2-drmprime"
     case "${PROJECT}" in
-      Allwinner|Rockchip)
+      Allwinner | Rockchip)
         PKG_PATCH_DIRS+=" vf-deinterlace-v4l2m2m"
+        ;;
     esac
     ;;
 esac
@@ -35,9 +36,9 @@ esac
 post_unpack() {
   # Fix FFmpeg version
   if [ "${PROJECT}" = "Amlogic" ]; then
-    echo "${PKG_FFMPEG_BRANCH}-${PKG_VERSION:0:7}" > ${PKG_BUILD}/VERSION
+    echo "${PKG_FFMPEG_BRANCH}-${PKG_VERSION:0:7}" >${PKG_BUILD}/VERSION
   else
-    echo "${PKG_VERSION}" > ${PKG_BUILD}/RELEASE
+    echo "${PKG_VERSION}" >${PKG_BUILD}/RELEASE
   fi
 }
 
@@ -227,6 +228,7 @@ configure_target() {
               --disable-libvpx \
               --disable-libx264 \
               --disable-libxavs \
+              --enable-libxml2 \
               --disable-libxvid \
               --enable-zlib \
               --enable-asm \

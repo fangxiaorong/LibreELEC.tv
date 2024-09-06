@@ -2,8 +2,8 @@
 # Copyright (C) 2022-present Team LibreELEC (https://libreelec.tv)
 
 PKG_NAME="mimalloc"
-PKG_VERSION="2.1.4"
-PKG_SHA256="ef31a7c593866a35883b2090654a8d6136a1cf06f22b577b4e1c818b1b0a8796"
+PKG_VERSION="2.1.7"
+PKG_SHA256="0eed39319f139afde8515010ff59baf24de9e47ea316a315398e8027d198202d"
 PKG_LICENSE="MIT"
 PKG_SITE="https://github.com/microsoft/mimalloc"
 PKG_URL="https://github.com/microsoft/mimalloc/archive/refs/tags/v${PKG_VERSION}.tar.gz"

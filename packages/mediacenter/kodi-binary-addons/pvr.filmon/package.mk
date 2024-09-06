@@ -3,8 +3,8 @@
 # Copyright (C) 2018-present Team LibreELEC (https://libreelec.tv)
 
 PKG_NAME="pvr.filmon"
-PKG_VERSION="21.0.1-Omega"
-PKG_SHA256="d0e1f4b32a31aee3e60b2e7b0c64c7a061ca69232cd2feebf5af77ad5f0a6036"
+PKG_VERSION="22.1.0-Piers"
+PKG_SHA256="93f19dde2c438292ffba2da8883706609d94fbe21a090988940f846b94d064b1"
 PKG_REV="2"
 PKG_ARCH="any"
 PKG_LICENSE="GPL"

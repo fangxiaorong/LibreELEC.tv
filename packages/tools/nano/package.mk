@@ -3,8 +3,8 @@
 # Copyright (C) 2019-present Team LibreELEC (https://libreelec.tv)
 
 PKG_NAME="nano"
-PKG_VERSION="8.0"
-PKG_SHA256="c17f43fc0e37336b33ee50a209c701d5beb808adc2d9f089ca831b40539c9ac4"
+PKG_VERSION="8.1"
+PKG_SHA256="93b3e3e9155ae389fe9ccf9cb7ab380eac29602835ba3077b22f64d0f0cbe8cb"
 PKG_LICENSE="GPL"
 PKG_SITE="https://www.nano-editor.org/"
 PKG_URL="https://www.nano-editor.org/dist/v${PKG_VERSION%%.*}/${PKG_NAME}-${PKG_VERSION}.tar.xz"
@@ -23,17 +23,9 @@ post_makeinstall_target() {
   cp -a ${PKG_DIR}/config/* ${INSTALL}/etc/
 
   mkdir -p ${INSTALL}/usr/share/nano
-  for FILE_TYPES in \
-    css \
-    html \
-    java \
-    javascript \
-    json \
-    php \
-    python \
-    sh \
-    xml
-  do
-    cp -a ${PKG_BUILD}/syntax/${FILE_TYPES}.nanorc ${INSTALL}/usr/share/nano/
+
+  PKG_FILE_LIST="css html java javascript json php python sh xml"
+  for PKG_FILE_TYPES in ${PKG_FILE_LIST}; do
+    cp -a ${PKG_BUILD}/syntax/${PKG_FILE_TYPES}.nanorc ${INSTALL}/usr/share/nano/
   done
 }

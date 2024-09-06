@@ -3,12 +3,12 @@
 # Copyright (C) 2017-present Team LibreELEC (https://libreelec.tv)
 
 PKG_NAME="samba"
-PKG_VERSION="4.20.0"
-PKG_SHA256="02672542510ac6e5d0c91c0c14d90ab4e6ec397c709e952c6da3a6e0b4d5a42f"
+PKG_VERSION="4.21.0"
+PKG_SHA256="09bb56db4ce003cafdbebe9bad368c4f4ff1945f732d18077d52f36ab20cef88"
 PKG_LICENSE="GPLv3+"
 PKG_SITE="https://www.samba.org"
 PKG_URL="https://download.samba.org/pub/samba/stable/${PKG_NAME}-${PKG_VERSION}.tar.gz"
-PKG_DEPENDS_TARGET="toolchain attr heimdal:host e2fsprogs Python3 libunwind zlib readline popt libaio connman gnutls wsdd2"
+PKG_DEPENDS_TARGET="autotools:host gcc:host attr heimdal:host e2fsprogs Python3 libunwind zlib readline popt libaio connman gnutls wsdd2"
 PKG_NEED_UNPACK="$(get_pkg_directory heimdal) $(get_pkg_directory e2fsprogs)"
 PKG_LONGDESC="A free SMB / CIFS fileserver and client."
 
@@ -82,14 +82,14 @@ configure_package() {
 }
 
 pre_configure_target() {
-# samba uses its own build directory
+  # samba uses its own build directory
   cd ${PKG_BUILD}
     rm -rf .${TARGET_NAME}
 
-# work around link issues
+  # work around link issues
   export LDFLAGS="${LDFLAGS} -lreadline -lncurses"
 
-# support 64-bit offsets and seeks on 32-bit platforms
+  # support 64-bit offsets and seeks on 32-bit platforms
   if [ "${TARGET_ARCH}" = "arm" ]; then
     export CFLAGS+=" -D_FILE_OFFSET_BITS=64 -D_OFF_T_DEFINED_ -Doff_t=off64_t -Dlseek=lseek64"
   fi
@@ -97,7 +97,7 @@ pre_configure_target() {
 
 configure_target() {
   cp ${PKG_DIR}/config/samba4-cache.txt ${PKG_BUILD}/cache.txt
-    echo "Checking uname machine type: \"${TARGET_ARCH}\"" >> ${PKG_BUILD}/cache.txt
+    echo "Checking uname machine type: \"${TARGET_ARCH}\"" >>${PKG_BUILD}/cache.txt
 
   export COMPILE_ET=${TOOLCHAIN}/bin/heimdal_compile_et
   export ASN1_COMPILE=${TOOLCHAIN}/bin/heimdal_asn1_compile

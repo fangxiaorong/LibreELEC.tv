@@ -3,14 +3,18 @@
 # Copyright (C) 2019-present Team LibreELEC (https://libreelec.tv)
 
 PKG_NAME="ninja"
-PKG_VERSION="1.12.0"
-PKG_SHA256="8b2c86cd483dc7fcb7975c5ec7329135d210099a89bc7db0590a07b0bbfe49a5"
+PKG_VERSION="1.12.1"
+PKG_SHA256="821bdff48a3f683bc4bb3b6f0b5fe7b2d647cf65d52aeb63328c91a6c6df285a"
 PKG_LICENSE="Apache"
 PKG_SITE="https://ninja-build.org/"
 PKG_URL="https://github.com/ninja-build/ninja/archive/v${PKG_VERSION}.tar.gz"
-PKG_DEPENDS_HOST="Python3:host googletest:host"
+PKG_DEPENDS_HOST="Python3:host"
 PKG_LONGDESC="Small build system with a focus on speed"
-PKG_TOOLCHAIN="cmake-make"
+PKG_TOOLCHAIN="manual"
+
+make_host() {
+  python3 ../configure.py --bootstrap
+}
 
 makeinstall_host() {
   mkdir -p ${TOOLCHAIN}/bin

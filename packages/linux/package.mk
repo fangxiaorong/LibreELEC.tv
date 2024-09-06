@@ -16,23 +16,24 @@ PKG_PATCH_DIRS="${LINUX}"
 
 case "${LINUX}" in
   amlogic)
-    PKG_VERSION="e8f897f4afef0031fe618a8e94127a0934896aba" # 6.8.0
-    PKG_SHA256="52608771cc42196f0a7a71a93270a27ca5f7ba1d9280fb398e521b0620a7a3ac"
+    PKG_VERSION="380df7b7938d3c3ba1d0d0b472a810fd38061329" # 6.9.5
+    PKG_SHA256="740368c264d071200577ef745c1e06362564daefd941c7c562905853c6f16598"
     PKG_URL="https://github.com/torvalds/linux/archive/${PKG_VERSION}.tar.gz"
     PKG_SOURCE_NAME="linux-${LINUX}-${PKG_VERSION}.tar.gz"
-    PKG_PATCH_DIRS="default"
+    PKG_PATCH_DIRS="default rtlwifi/6.10 rtlwifi/6.11"
     ;;
   raspberrypi)
-    PKG_VERSION="dda85fda5b2dda7c4e2ba18770bd2033313006d2" # 6.6.30
-    PKG_SHA256="55de2075e2b4d21b3d4f3159bc686dcbd938f6d61e56b21c51b58ef6919f1ac2"
+    PKG_VERSION="209e8a3e6646f25abb352fd5a8a4c2e855b1e952" # 6.6.45
+    PKG_SHA256="76fa23eda2d1690ac73e783fd11cabebe1f1f8ec8693f3491cda7d155df1b6d4"
     PKG_URL="https://github.com/raspberrypi/linux/archive/${PKG_VERSION}.tar.gz"
     PKG_SOURCE_NAME="linux-${LINUX}-${PKG_VERSION}.tar.gz"
+    PKG_PATCH_DIRS="raspberrypi rtlwifi/6.9 rtlwifi/6.10 rtlwifi/6.11"
     ;;
   *)
-    PKG_VERSION="6.6.30"
-    PKG_SHA256="b66a5b863b0f8669448b74ca83bd641a856f164b29956e539bbcb5fdeeab9cc6"
+    PKG_VERSION="6.10.3"
+    PKG_SHA256="fa5f22fd67dd05812d39dca579320c493048e26c4a556048a12385e7ae6fc698"
     PKG_URL="https://www.kernel.org/pub/linux/kernel/v${PKG_VERSION/.*/}.x/${PKG_NAME}-${PKG_VERSION}.tar.xz"
-    PKG_PATCH_DIRS="default"
+    PKG_PATCH_DIRS="default rtlwifi/6.11"
     ;;
 esac
 
@@ -59,6 +60,10 @@ fi
 
 if [[ "${KERNEL_TARGET}" = uImage* ]]; then
   PKG_DEPENDS_TARGET+=" u-boot-tools:host"
+fi
+
+if [ "${BOOTLOADER}" = "bcm2835-bootloader" -a "${TARGET_KERNEL_ARCH}" = "arm64" ]; then
+  PKG_DEPENDS_TARGET+=" pigz:host"
 fi
 
 # Ensure that the dependencies of initramfs:target are built correctly, but
@@ -98,7 +103,8 @@ makeinstall_host() {
 }
 
 pre_make_target() {
-  ( cd ${ROOT}
+  ( 
+    cd ${ROOT}
     rm -rf ${BUILD}/initramfs
     rm -f ${STAMPS_INSTALL}/initramfs/install_target ${STAMPS_INSTALL}/*/install_init
     ${SCRIPTS}/install initramfs
@@ -177,7 +183,7 @@ pre_make_target() {
     kernel_make oldconfig
   else
     # accept default answers for .config changes
-    yes "" | kernel_make oldconfig > /dev/null
+    yes "" | kernel_make oldconfig >/dev/null
   fi
 
   if [ -f "${DISTRO_DIR}/${DISTRO}/kernel_options" ]; then
@@ -191,7 +197,7 @@ pre_make_target() {
       if [ "$(${PKG_BUILD}/scripts/config --state ${OPTION%%=*})" != "$(echo ${OPTION##*=} | tr -d '"')" ]; then
         MISSING_KERNEL_OPTIONS+="\t${OPTION}\n"
       fi
-    done < ${DISTRO_DIR}/${DISTRO}/kernel_options
+    done <${DISTRO_DIR}/${DISTRO}/kernel_options
 
     if [ -n "${MISSING_KERNEL_OPTIONS}" ]; then
       print_color CLR_WARNING "LINUX: kernel options not correct: \n${MISSING_KERNEL_OPTIONS%%}\nPlease run ./tools/check_kernel_config\n"
@@ -213,7 +219,8 @@ make_target() {
   DTC_FLAGS=-@ kernel_make ${KERNEL_TARGET} ${KERNEL_MAKE_EXTRACMD} modules
 
   if [ "${PKG_BUILD_PERF}" = "yes" ]; then
-    ( cd tools/perf
+    ( 
+      cd tools/perf
 
       # arch specific perf build args
       case "${TARGET_ARCH}" in
@@ -255,9 +262,9 @@ make_target() {
     if [ "${KERNEL_UIMAGE_COMP}" != "none" ]; then
       COMPRESSED_SIZE=$(stat -t "arch/${TARGET_KERNEL_ARCH}/boot/${KERNEL_TARGET}" | awk '{print $2}')
       # align to 1 MiB
-      COMPRESSED_SIZE=$(( ((${COMPRESSED_SIZE} - 1 >> 20) + 1) << 20 ))
-      PKG_KERNEL_UIMAGE_LOADADDR=$(printf '%X' "$(( ${KERNEL_UIMAGE_LOADADDR} + ${COMPRESSED_SIZE} ))")
-      PKG_KERNEL_UIMAGE_ENTRYADDR=$(printf '%X' "$(( ${KERNEL_UIMAGE_ENTRYADDR} + ${COMPRESSED_SIZE} ))")
+      COMPRESSED_SIZE=$((((${COMPRESSED_SIZE} - 1 >> 20) + 1) << 20))
+      PKG_KERNEL_UIMAGE_LOADADDR=$(printf '%X' "$((${KERNEL_UIMAGE_LOADADDR} + ${COMPRESSED_SIZE}))")
+      PKG_KERNEL_UIMAGE_ENTRYADDR=$(printf '%X' "$((${KERNEL_UIMAGE_ENTRYADDR} + ${COMPRESSED_SIZE}))")
     else
       PKG_KERNEL_UIMAGE_LOADADDR=${KERNEL_UIMAGE_LOADADDR}
       PKG_KERNEL_UIMAGE_ENTRYADDR=${KERNEL_UIMAGE_ENTRYADDR}

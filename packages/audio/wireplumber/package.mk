@@ -2,8 +2,8 @@
 # Copyright (C) 2022-present Team LibreELEC (https://libreelec.tv)
 
 PKG_NAME="wireplumber"
-PKG_VERSION="0.5.2"
-PKG_SHA256="24ecc2323f7c39fe577b50903c324cfcbb77b9ea2da01baffd3467c9dbad1d8a"
+PKG_VERSION="0.5.5"
+PKG_SHA256="49075cd5c2f4820839a9e69d4a22386bc280c62b92c153af9be39ca439d45a09"
 PKG_LICENSE="MIT"
 PKG_SITE="https://gitlab.freedesktop.org/pipewire/wireplumber"
 PKG_URL="https://gitlab.freedesktop.org/pipewire/wireplumber/-/archive/${PKG_VERSION}/${PKG_NAME}-${PKG_VERSION}.tar.gz"
@@ -27,7 +27,7 @@ post_makeinstall_target() {
   # ref https://gitlab.freedesktop.org/pipewire/wireplumber/-/commit/0da29f38181e391160fa8702623050b8544ec775
   # ref https://github.com/PipeWire/wireplumber/blob/master/docs/rst/daemon/configuration/migration.rst
   # ref https://github.com/PipeWire/wireplumber/blob/master/docs/rst/daemon/configuration/features.rst
-  cat > ${INSTALL}/usr/share/wireplumber/wireplumber.conf.d/89-disable-session-dbus-dependent-features.conf << EOF
+  cat >${INSTALL}/usr/share/wireplumber/wireplumber.conf.d/89-disable-session-dbus-dependent-features.conf <<EOF
 wireplumber.profiles = {
   main = {
     monitor.alsa.reserve-device = disabled
@@ -37,7 +37,7 @@ wireplumber.profiles = {
 }
 EOF
 
-  cat > ${INSTALL}/usr/share/wireplumber/wireplumber.conf.d/89-disable-v4l2.conf << EOF
+  cat >${INSTALL}/usr/share/wireplumber/wireplumber.conf.d/89-disable-v4l2.conf <<EOF
 wireplumber.profiles = {
   main = {
     monitor.v4l2 = disabled
@@ -45,7 +45,7 @@ wireplumber.profiles = {
 }
 EOF
 
-  cat > ${INSTALL}/usr/share/wireplumber/wireplumber.conf.d/89-disable-bluez-hfphsp-backend.conf << EOF
+  cat >${INSTALL}/usr/share/wireplumber/wireplumber.conf.d/89-disable-bluez-hfphsp-backend.conf <<EOF
 monitor.bluez.properties = {
   bluez5.hfphsp-backend = "none"
 }

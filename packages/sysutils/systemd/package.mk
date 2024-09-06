@@ -3,12 +3,12 @@
 # Copyright (C) 2018-present Team LibreELEC (https://libreelec.tv)
 
 PKG_NAME="systemd"
-PKG_VERSION="255.5"
-PKG_SHA256="95e419f0bd80fde9f169533e070348beb94073d9a58daf505d719ed3ebfd2411"
+PKG_VERSION="256.5"
+PKG_SHA256="41bb91861ab9f2f2b6cadad558ea1f8764d701452b018852146d642a850c8a8b"
 PKG_LICENSE="LGPL2.1+"
 PKG_SITE="http://www.freedesktop.org/wiki/Software/systemd"
-PKG_URL="https://github.com/systemd/systemd-stable/archive/v${PKG_VERSION}.tar.gz"
-PKG_DEPENDS_TARGET="toolchain libcap kmod util-linux entropy libidn2 wait-time-sync Jinja2:host"
+PKG_URL="https://github.com/systemd/systemd/archive/v${PKG_VERSION}.tar.gz"
+PKG_DEPENDS_TARGET="meson:host ninja:host gcc:host libcap kmod util-linux entropy libidn2 wait-time-sync Jinja2:host"
 PKG_LONGDESC="A system and session manager for Linux, compatible with SysV and LSB init scripts."
 
 PKG_MESON_OPTS_TARGET="--libdir=/usr/lib \
@@ -183,10 +183,10 @@ post_makeinstall_target() {
 
   # distro preset policy
   safe_remove ${INSTALL}/usr/lib/systemd/system-preset/*
-  echo "disable *" > ${INSTALL}/usr/lib/systemd/system-preset/99-default.preset
+  echo "disable *" >${INSTALL}/usr/lib/systemd/system-preset/99-default.preset
 
   safe_remove ${INSTALL}/usr/lib/systemd/user-preset/*
-  echo "disable *" > ${INSTALL}/usr/lib/systemd/user-preset/90-systemd.preset
+  echo "disable *" >${INSTALL}/usr/lib/systemd/user-preset/90-systemd.preset
 
   # remove networkd
   safe_remove ${INSTALL}/usr/lib/systemd/network
