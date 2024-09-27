@@ -3,8 +3,8 @@
 
 PKG_NAME="Python3"
 # When changing PKG_VERSION remember to sync PKG_PYTHON_VERSION!
-PKG_VERSION="3.12.5"
-PKG_SHA256="fa8a2e12c5e620b09f53e65bcd87550d2e5a1e2e04bf8ba991dcc55113876397"
+PKG_VERSION="3.12.6"
+PKG_SHA256="1999658298cf2fb837dffed8ff3c033ef0c98ef20cf73c5d5f66bed5ab89697c"
 PKG_LICENSE="OSS"
 PKG_SITE="https://www.python.org/"
 PKG_URL="https://www.python.org/ftp/python/${PKG_VERSION}/${PKG_NAME::-1}-${PKG_VERSION}.tar.xz"
@@ -18,34 +18,29 @@ PKG_PYTHON_VERSION="python3.12"
 PKG_CONFIGURE_OPTS_HOST="ac_cv_prog_HAS_HG=/bin/false
                          ac_cv_prog_SVNVERSION=/bin/false
                          py_cv_module_unicodedata=yes
+                         py_cv_module__bz2=n/a
                          py_cv_module__codecs_cn=n/a
                          py_cv_module__codecs_hk=n/a
                          py_cv_module__codecs_iso2022=n/a
                          py_cv_module__codecs_jp=n/a
                          py_cv_module__codecs_kr=n/a
                          py_cv_module__codecs_tw=n/a
+                         py_cv_module__decimal=n/a
                          py_cv_module_nis=n/a
                          py_cv_module_ossaudiodev=n/a
                          py_cv_module__dbm=n/a
                          py_cv_module__gdbm=n/a
                          --disable-pyc-build
                          --disable-sqlite3
-                         --enable-openssl
-                         --disable-readline
-                         --disable-bzip2
-                         --enable-zlib
-                         --enable-xz
+                         --without-readline
                          --disable-tk
                          --disable-curses
                          --disable-pydoc
                          --disable-test-modules
                          --disable-lib2to3
                          --disable-idle3
-                         --without-cxx-main
                          --with-expat=builtin
-                         --with-libmpdec=none
                          --with-doc-strings
-                         --with-system-ffi
                          --without-pymalloc
                          --with-ensurepip=no
 "
@@ -69,27 +64,21 @@ PKG_CONFIGURE_OPTS_TARGET="ac_cv_prog_HAS_HG=/bin/false
                            py_cv_module__codecs_jp=n/a
                            py_cv_module__codecs_kr=n/a
                            py_cv_module__codecs_tw=n/a
+                           py_cv_module__decimal=n/a
                            py_cv_module_nis=n/a
                            py_cv_module_ossaudiodev=n/a
                            py_cv_module__dbm=n/a
                            --disable-pyc-build
                            --enable-sqlite3
-                           --enable-openssl
-                           --enable-readline
-                           --enable-bzip2
-                           --enable-zlib
-                           --enable-xz
+                           --with-readline
                            --disable-tk
                            --enable-curses
                            --disable-pydoc
                            --disable-test-modules
                            --disable-lib2to3
                            --disable-idle3
-                           --without-cxx-main
                            --with-expat=system
-                           --with-libmpdec=none
                            --with-doc-strings
-                           --with-system-ffi
                            --without-pymalloc
                            --without-ensurepip
                            --enable-ipv6
